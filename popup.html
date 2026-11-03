@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MeetingMode</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="popup-shell">
+
+    <!-- HEADER BAR WITH INTEGRATED VIEW SWITCHER -->
+    <header class="hud-header">
+      <div class="brand-group">
+        <div class="brand-glyph">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+          </svg>
+        </div>
+        <span class="brand-name">MeetingMode</span>
+        <span id="shield-status-pill" class="status-pill pill-off">STANDBY</span>
+      </div>
+
+      <!-- Segmented View Tabs (Shield vs Tools) -->
+      <div class="header-nav-tabs">
+        <button class="nav-tab-btn active" id="tab-nav-shield" data-target="view-shield" title="Shield & Detection">Shield</button>
+        <button class="nav-tab-btn" id="tab-nav-tools" data-target="view-tools" title="Page & Domain Tools">Tools</button>
+      </div>
+
+      <div class="header-tools">
+        <!-- Theme Toggle -->
+        <button id="btn-theme-toggle" class="icon-tool-btn" title="Toggle Light/Dark Theme" aria-label="Toggle Theme">
+          <svg id="icon-sun" class="theme-icon hidden" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+          <svg id="icon-moon" class="theme-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+        </button>
+
+        <!-- Options Portal -->
+        <button id="btn-open-options" class="icon-tool-btn" title="Preferences & Keywords" aria-label="Settings">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- VIEW 1: MAIN SHIELD DASHBOARD (Zero-Scroll Viewport) -->
+    <main id="view-shield" class="popup-view active">
+
+      <!-- UNIFIED MASTER CARD -->
+      <section class="master-switch-card" id="card-master-switch">
+        <div class="master-card-top">
+          <div class="switch-content">
+            <div class="radar-beacon" id="radar-beacon">
+              <span class="radar-dot"></span>
+              <span class="radar-wave"></span>
+            </div>
+            <div class="switch-labels">
+              <h1 class="switch-title" id="master-title">Screen Shield: OFF</h1>
+              <p class="switch-desc" id="master-desc">Click card to arm privacy cloak</p>
+            </div>
+          </div>
+          <div class="toggle-slider-track" id="master-toggle-btn" role="switch" aria-checked="false" tabindex="0">
+            <div class="toggle-slider-thumb"></div>
+          </div>
+        </div>
+
+        <!-- INTEGRATED SCOPE & MODE STRIP -->
+        <div class="master-sub-controls" id="master-sub-controls">
+          <!-- Scope Pill (3-Way: Tab | Window | All) -->
+          <div class="micro-segment micro-segment-scope" title="Shield Scope: choose whether to protect only this tab, this window, or all monitors">
+            <button class="micro-segment-btn" id="btn-scope-tab" title="Protect only this active tab (Google Meet 'A Tab')">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+              <span>Tab</span>
+            </button>
+            <button class="micro-segment-btn active" id="btn-scope-window" title="Protect this presentation window (Google Meet 'A Window')">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+              <span>Window</span>
+            </button>
+            <button class="micro-segment-btn" id="btn-scope-global" title="Protect all windows & monitors (Google Meet 'Entire Screen')">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="9" height="8" rx="1.5"></rect><rect x="13" y="3" width="9" height="8" rx="1.5"></rect><rect x="2" y="13" width="9" height="8" rx="1.5"></rect><rect x="13" y="13" width="9" height="8" rx="1.5"></rect></svg>
+              <span>All</span>
+            </button>
+          </div>
+
+          <!-- Mode Pill -->
+          <div class="micro-segment micro-segment-mode" title="Masking Mode">
+            <button class="micro-segment-btn active" id="btn-mode-blur" title="Frosted privacy blur">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"></path><line x1="2" y1="2" x2="22" y2="22"></line></svg>
+              <span>Blur</span>
+            </button>
+            <button class="micro-segment-btn" id="btn-mode-scramble" title="Deterministic synthetic data scramble">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 3 21 3 21 8"></polyline><line x1="4" y1="20" x2="21" y2="3"></line><polyline points="21 16 21 21 16 21"></polyline><line x1="15" y1="15" x2="21" y2="21"></line></svg>
+              <span>Scramble</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- INSTANT PRESETS -->
+      <div class="presets-row">
+        <button class="preset-pill-btn" id="popup-preset-demo" title="Deterministic Demo Scramble with financial & profile masks">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 3 21 3 21 8"></polyline><line x1="4" y1="20" x2="21" y2="3"></line><polyline points="21 16 21 21 16 21"></polyline><line x1="15" y1="15" x2="21" y2="21"></line></svg>
+          <span>Client Demo</span>
+        </button>
+        <button class="preset-pill-btn" id="popup-preset-meeting" title="Frosted blur on chats, notifications silenced">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+          <span>Team Meet</span>
+        </button>
+        <button class="preset-pill-btn" id="popup-preset-loom" title="Presentation Spotlight on hovered cards & tab cloaked">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polygon points="10 8 16 12 10 16 10 8"></polygon></svg>
+          <span>Loom Beam</span>
+        </button>
+      </div>
+
+      <!-- TELEMETRY BAR -->
+      <div class="telemetry-bar">
+        <div class="telemetry-left">
+          <span class="telemetry-label">Active Tab Masked:</span>
+          <span class="telemetry-count font-mono" id="masked-count-badge">0 items</span>
+        </div>
+        <div class="telemetry-peek-hint">
+          <span class="peek-pip"></span>
+          <span>Hover item to peek</span>
+        </div>
+      </div>
+
+      <!-- 8 COMPACT PRIVACY RULE CHIPS (Balanced 2x4 Grid, Symmetrical) -->
+      <div class="compact-rules-grid">
+        <label class="compact-rule-chip" for="filter-financials" title="Mask dollar amounts, balances, MRR, transactions">
+          <input type="checkbox" id="filter-financials" checked>
+          <div class="rule-chip-inner">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+            <span>Financials ($)</span>
+          </div>
+        </label>
+
+        <label class="compact-rule-chip" for="filter-emails" title="Mask user emails and PII">
+          <input type="checkbox" id="filter-emails" checked>
+          <div class="rule-chip-inner">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"></circle><path d="M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-3.92 7.94"></path></svg>
+            <span>User Emails</span>
+          </div>
+        </label>
+
+        <label class="compact-rule-chip" for="filter-secrets" title="Mask API keys, bearer tokens, and secrets">
+          <input type="checkbox" id="filter-secrets" checked>
+          <div class="rule-chip-inner">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 2l-2 2m-1.5 1.5L16 7l-1.5-1.5-3 3L11 10l-1.5 1.5M7 15a5 5 0 1 1 7-7 5 5 0 0 1-7 7z"></path></svg>
+            <span>API Secrets</span>
+          </div>
+        </label>
+
+        <label class="compact-rule-chip" for="filter-numbers" title="Mask phone numbers and numeric IDs">
+          <input type="checkbox" id="filter-numbers">
+          <div class="rule-chip-inner">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
+            <span>Phone & IDs</span>
+          </div>
+        </label>
+
+        <label class="compact-rule-chip" for="filter-avatars" title="Mask user profile pictures across all apps">
+          <input type="checkbox" id="filter-avatars" checked>
+          <div class="rule-chip-inner">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            <span>Avatars</span>
+          </div>
+        </label>
+
+        <label class="compact-rule-chip" for="filter-inputs" title="Auto-mask prefilled inputs and passwords until focused">
+          <input type="checkbox" id="filter-inputs" checked>
+          <div class="rule-chip-inner">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+            <span>Ghost Inputs</span>
+          </div>
+        </label>
+
+        <label class="compact-rule-chip" for="filter-messages" title="Auto-mask Messenger, FB, Discord, WhatsApp, Slack, Teams">
+          <input type="checkbox" id="filter-messages" checked>
+          <div class="rule-chip-inner">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+            <span>Chat Messages</span>
+          </div>
+        </label>
+
+        <label class="compact-rule-chip" for="filter-spotlight" title="Presentation spotlight beam on hovered card">
+          <input type="checkbox" id="filter-spotlight">
+          <div class="rule-chip-inner">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line></svg>
+            <span>Spotlight</span>
+          </div>
+        </label>
+      </div>
+
+      <!-- EMERGENCY PANIC CURTAIN ACTION STRIP -->
+      <button id="btn-panic-curtain" class="panic-banner-btn" title="Instantly drop a frosted privacy curtain over the presentation">
+        <div class="panic-banner-left">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"></polygon><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+          <span>Emergency Panic Curtain</span>
+        </div>
+        <kbd class="kbd-chip">Alt+Shift+B</kbd>
+      </button>
+
+    </main>
+
+    <!-- VIEW 2: TOOLS & DOMAIN CONTROLS (Clean, Secondary Tab) -->
+    <main id="view-tools" class="popup-view hidden">
+      <div class="tools-stack">
+        <!-- Target Element Picker -->
+        <button id="btn-start-picker" class="action-row-btn" title="Click to target a specific card, sidebar, or element on this page">
+          <div class="row-btn-left">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="22" y1="12" x2="18" y2="12"></line><line x1="6" y1="12" x2="2" y2="12"></line><line x1="12" y1="6" x2="12" y2="2"></line><line x1="12" y1="22" x2="12" y2="18"></line></svg>
+            <div class="row-btn-texts">
+              <span class="row-btn-title">Shield Custom Element</span>
+              <span class="row-btn-sub">Click any element on page to mask / unmask</span>
+            </div>
+          </div>
+          <kbd class="kbd-chip">Alt+Shift+S</kbd>
+        </button>
+
+        <!-- Active Site Custom Rules Manager -->
+        <div id="site-custom-rules-row" class="custom-domain-bar hidden">
+          <div class="custom-domain-left">
+            <span class="custom-count-tag font-mono" id="site-custom-count">0</span>
+            <span class="custom-label">custom blocks on this site</span>
+          </div>
+          <button id="btn-clear-site-custom" class="btn-clear-chip" title="Clear all custom masked elements on this domain">Clear All</button>
+        </div>
+
+        <!-- Tab Title Cloaker -->
+        <label class="toggle-option-row" for="toggle-cloak-tabs">
+          <div class="option-row-left">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+            <div class="option-row-texts">
+              <span class="option-row-title">Cloak Browser Tab Title</span>
+              <span class="option-row-sub">Disguises tab as "Workspace" to viewers</span>
+            </div>
+          </div>
+          <input type="checkbox" id="toggle-cloak-tabs" checked>
+        </label>
+
+        <!-- Silence Web Notifications -->
+        <label class="toggle-option-row" for="toggle-notifications">
+          <div class="option-row-left">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path><line x1="2" y1="2" x2="22" y2="22"></line></svg>
+            <div class="option-row-texts">
+              <span class="option-row-title">Silence Web Notifications</span>
+              <span class="option-row-sub">Suppresses in-page toast popups while armed</span>
+            </div>
+          </div>
+          <input type="checkbox" id="toggle-notifications" checked>
+        </label>
+
+        <!-- In-Page Floating Quick Toggle -->
+        <label class="toggle-option-row" for="toggle-floating-dock">
+          <div class="option-row-left">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="3"></circle></svg>
+            <div class="option-row-texts">
+              <span class="option-row-title">In-Page Quick Toggle Dock</span>
+              <span class="option-row-sub">Corner pill to arm/disarm without popup</span>
+            </div>
+          </div>
+          <input type="checkbox" id="toggle-floating-dock" checked>
+        </label>
+      </div>
+    </main>
+
+    <!-- FOOTER STATUS STRIP -->
+    <footer class="hud-footer">
+      <div class="footer-left">
+        <span class="footer-dot"></span>
+        <span id="current-tab-domain" class="font-mono">Current Site</span>
+      </div>
+      <div class="footer-shortcut font-mono">
+        <kbd>Alt+Shift+M</kbd>
+      </div>
+    </footer>
+
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

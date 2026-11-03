@@ -1,0 +1,1016 @@
+/* ==========================================================================
+   MeetingMode Privacy Shield — Injected Page Styles
+   Zero layout displacement, instant CSS hover-to-peek, auto-chat shielding,
+   and bottom-corner tactical HUD panel.
+   ========================================================================== */
+
+/* 1. MASKED INLINE TEXT / DATA */
+.shield-masked-blur {
+  filter: blur(5.5px) !important;
+  user-select: none !important;
+  pointer-events: auto !important;
+  cursor: pointer !important;
+  transition: filter 0.14s cubic-bezier(0.2, 1, 0.3, 1), background-color 0.14s ease, box-shadow 0.14s ease !important;
+  background-color: rgba(16, 185, 129, 0.09) !important;
+  border-radius: 3px !important;
+  padding: 0 3px !important;
+  display: inline-block !important;
+  vertical-align: baseline !important;
+}
+
+/* INSTANT HOVER-TO-PEEK (Reveal for presenter on hover, zero delay) */
+.shield-masked-blur:hover {
+  filter: none !important;
+  background-color: rgba(16, 185, 129, 0.16) !important;
+  outline: 1.5px dashed #10b981 !important;
+  outline-offset: 1px !important;
+  user-select: text !important;
+}
+
+/* Ephemeral Peek State (Active when clicked/pinned or peeked) */
+.shield-peek-active {
+  filter: none !important;
+  background-color: rgba(16, 185, 129, 0.16) !important;
+  outline: 1.5px dashed #10b981 !important;
+  outline-offset: 1px !important;
+  border-radius: 3px !important;
+  cursor: pointer !important;
+  user-select: text !important;
+}
+
+/* 2. SCRAMBLE / DEMO MODE (Replaced values with subtle indicator) */
+.shield-masked-scramble {
+  position: relative !important;
+  cursor: pointer !important;
+  border-bottom: 1.5px dotted rgba(16, 185, 129, 0.6) !important;
+  padding: 0 2px !important;
+  border-radius: 2px !important;
+  font-feature-settings: "tnum" 1 !important;
+  transition: background-color 0.12s ease !important;
+}
+
+.shield-masked-scramble:hover {
+  background-color: rgba(16, 185, 129, 0.15) !important;
+  box-shadow: 0 0 0 1px #10b981 !important;
+}
+
+/* 3. WHOLE-ELEMENT BLOCKS SHIELDED BY USER */
+.shield-custom-blocked {
+  position: relative !important;
+  filter: blur(10px) !important;
+  opacity: 0.45 !important;
+  transition: filter 0.15s ease, opacity 0.15s ease !important;
+}
+
+/* Floating Direct Unshield Button on Custom Elements */
+.shield-unshield-trigger {
+  all: initial !important;
+  position: absolute !important;
+  top: 8px !important;
+  right: 8px !important;
+  z-index: 2147483645 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 5px !important;
+  padding: 4px 10px !important;
+  border-radius: 16px !important;
+  background: #0f172a !important;
+  color: #ffffff !important;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4) !important;
+  cursor: pointer !important;
+  opacity: 0.85 !important;
+  filter: none !important;
+  transition: all 0.12s ease !important;
+}
+
+.shield-unshield-trigger:hover {
+  opacity: 1 !important;
+  background: #ef4444 !important;
+  transform: scale(1.05) !important;
+}
+
+/* 4. IN-PAGE FLOATING PRIVACY PILL (Draggable Dock) */
+#meetingmode-floating-dock {
+  position: fixed !important;
+  bottom: 16px;
+  right: 18px;
+  z-index: 2147483646 !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 7px !important;
+  padding: 6px 12px 6px 10px !important;
+  border-radius: 20px !important;
+  background: #090a0f !important;
+  color: #f8fafc !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  box-shadow: 0 6px 22px rgba(0, 0, 0, 0.45) !important;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  font-size: 11.5px !important;
+  font-weight: 600 !important;
+  cursor: grab !important;
+  user-select: none !important;
+  transition: transform 0.14s ease, border-color 0.14s ease, opacity 0.14s ease !important;
+  opacity: 0.92 !important;
+  touch-action: none !important;
+}
+
+#meetingmode-floating-dock.dragging {
+  cursor: grabbing !important;
+  opacity: 1 !important;
+  transform: scale(1.06) !important;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.65), 0 0 0 1px #10b981 !important;
+  transition: none !important;
+}
+
+#meetingmode-floating-dock:hover {
+  opacity: 1 !important;
+  transform: translateY(-2px) scale(1.02) !important;
+  border-color: #10b981 !important;
+}
+
+#meetingmode-floating-dock.dragging:hover {
+  transform: scale(1.06) !important;
+}
+
+#meetingmode-floating-dock .dock-grip {
+  display: flex !important;
+  align-items: center !important;
+  color: #64748b !important;
+  margin-right: -2px !important;
+}
+
+#meetingmode-floating-dock .dock-pulse {
+  width: 7px !important;
+  height: 7px !important;
+  border-radius: 50% !important;
+  background-color: #10b981 !important;
+  box-shadow: 0 0 6px #10b981 !important;
+}
+
+#meetingmode-floating-dock.dock-off .dock-pulse {
+  background-color: #64748b !important;
+  box-shadow: none !important;
+}
+
+#meetingmode-floating-dock.dock-off {
+  background: #1e222b !important;
+  color: #94a3b8 !important;
+}
+
+/* 5. IN-PAGE BOTTOM-RIGHT TACTICAL HUD MODAL */
+#meetingmode-inpage-panel {
+  position: fixed !important;
+  bottom: 56px !important;
+  right: 18px !important;
+  width: 320px !important;
+  max-height: 88vh !important;
+  overflow-y: auto !important;
+  z-index: 2147483647 !important;
+  background: rgba(13, 15, 20, 0.95) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  color: #f8fafc !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.05) !important;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  font-size: 12px !important;
+  display: none !important;
+  flex-direction: column !important;
+  gap: 8px !important;
+  padding: 10px 12px !important;
+  box-sizing: border-box !important;
+}
+
+#meetingmode-inpage-panel.mm-open {
+  display: flex !important;
+  animation: mm-popover-in 0.16s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+#meetingmode-inpage-panel::-webkit-scrollbar {
+  width: 4px !important;
+}
+#meetingmode-inpage-panel::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15) !important;
+  border-radius: 4px !important;
+}
+
+@keyframes mm-popover-in {
+  from { opacity: 0; transform: translateY(8px) scale(0.96); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.mm-panel-head {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  padding-bottom: 2px !important;
+  gap: 6px !important;
+}
+
+.mm-panel-brand {
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+}
+
+.mm-brand-glyph {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 20px !important;
+  height: 20px !important;
+  border-radius: 5px !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  color: #10b981 !important;
+}
+
+.mm-brand-title {
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.01em !important;
+  color: #f8fafc !important;
+}
+
+.mm-status-pill {
+  padding: 1px 5px !important;
+  border-radius: 10px !important;
+  font-size: 8.5px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.04em !important;
+  text-transform: uppercase !important;
+}
+
+.mm-pill-off {
+  background: rgba(255, 255, 255, 0.06) !important;
+  color: #94a3b8 !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+.mm-pill-armed {
+  background: rgba(16, 185, 129, 0.15) !important;
+  color: #10b981 !important;
+  border: 1px solid rgba(16, 185, 129, 0.35) !important;
+  box-shadow: 0 0 8px rgba(16, 185, 129, 0.2) !important;
+}
+
+.mm-panel-close-btn {
+  all: initial !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 20px !important;
+  height: 20px !important;
+  border-radius: 4px !important;
+  color: #94a3b8 !important;
+  cursor: pointer !important;
+  transition: all 0.12s ease !important;
+}
+
+.mm-panel-close-btn:hover {
+  background: rgba(255, 255, 255, 0.1) !important;
+  color: #ffffff !important;
+}
+
+/* Master Card in In-Page HUD */
+.mm-master-card {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 8px !important;
+  padding: 8px 10px !important;
+  border-radius: 9px !important;
+  background: #14171f !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  cursor: pointer !important;
+  transition: all 0.14s ease !important;
+  box-sizing: border-box !important;
+}
+
+.mm-master-card:hover {
+  border-color: rgba(255, 255, 255, 0.18) !important;
+}
+
+.mm-master-card.armed {
+  background: #14171f !important;
+  border-color: rgba(16, 185, 129, 0.4) !important;
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.15) !important;
+}
+
+.mm-master-card-top {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  width: 100% !important;
+}
+
+.mm-switch-content {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  min-width: 0 !important;
+}
+
+.mm-radar-beacon {
+  position: relative !important;
+  width: 10px !important;
+  height: 10px !important;
+  flex-shrink: 0 !important;
+}
+
+.mm-radar-dot {
+  position: absolute !important;
+  inset: 1px !important;
+  border-radius: 50% !important;
+  background: #64748b !important;
+  transition: background 0.18s ease !important;
+}
+
+.mm-radar-beacon.armed .mm-radar-dot {
+  background: #10b981 !important;
+}
+
+.mm-radar-wave {
+  display: none !important;
+  position: absolute !important;
+  inset: -3px !important;
+  border-radius: 50% !important;
+  border: 1.5px solid #10b981 !important;
+  opacity: 0 !important;
+}
+
+.mm-radar-beacon.armed .mm-radar-wave {
+  display: block !important;
+  animation: mm-radar-pulse 1.8s infinite ease-out !important;
+}
+
+@keyframes mm-radar-pulse {
+  0% { transform: scale(0.6); opacity: 0.8; }
+  100% { transform: scale(1.8); opacity: 0; }
+}
+
+.mm-switch-labels {
+  display: flex !important;
+  flex-direction: column !important;
+  min-width: 0 !important;
+}
+
+.mm-switch-title {
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  color: #f8fafc !important;
+  line-height: 1.2 !important;
+}
+
+.mm-switch-desc {
+  font-size: 9.5px !important;
+  color: #94a3b8 !important;
+  line-height: 1.25 !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+.mm-toggle-slider-track {
+  width: 32px !important;
+  height: 18px !important;
+  border-radius: 9px !important;
+  background: #232733 !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  padding: 2px !important;
+  display: flex !important;
+  align-items: center !important;
+  flex-shrink: 0 !important;
+  transition: background-color 0.18s ease, border-color 0.18s ease !important;
+  box-sizing: border-box !important;
+}
+
+.mm-toggle-slider-thumb {
+  width: 12px !important;
+  height: 12px !important;
+  border-radius: 50% !important;
+  background: #64748b !important;
+  transform: translateX(0) !important;
+  transition: transform 0.18s cubic-bezier(0.23, 1, 0.32, 1), background-color 0.18s ease !important;
+}
+
+.mm-toggle-slider-track.armed {
+  background: #10b981 !important;
+  border-color: #10b981 !important;
+}
+
+.mm-toggle-slider-track.armed .mm-toggle-slider-thumb {
+  background: #ffffff !important;
+  transform: translateX(14px) !important;
+}
+
+.mm-master-sub-controls {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 6px !important;
+  padding-top: 6px !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.06) !important;
+}
+
+.mm-micro-segment {
+  display: flex !important;
+  background: #0d0f14 !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 6px !important;
+  padding: 2px !important;
+  gap: 2px !important;
+}
+
+.mm-micro-segment-scope {
+  flex: 1.35 !important;
+}
+
+.mm-micro-segment-mode {
+  flex: 1 !important;
+}
+
+.mm-micro-btn {
+  all: initial !important;
+  flex: 1 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 3px !important;
+  height: 20px !important;
+  padding: 0 4px !important;
+  border-radius: 4px !important;
+  font-family: inherit !important;
+  font-size: 9.5px !important;
+  font-weight: 600 !important;
+  color: #94a3b8 !important;
+  cursor: pointer !important;
+  white-space: nowrap !important;
+  transition: all 0.12s ease !important;
+  box-sizing: border-box !important;
+}
+
+.mm-micro-btn:hover {
+  color: #f8fafc !important;
+}
+
+.mm-micro-btn.active {
+  background: #1e222b !important;
+  color: #10b981 !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Presets Strip in HUD */
+.mm-presets-row {
+  display: flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+  width: 100% !important;
+}
+
+.mm-preset-pill {
+  all: initial !important;
+  flex: 1 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 4px !important;
+  height: 24px !important;
+  padding: 0 6px !important;
+  border-radius: 6px !important;
+  background: #14171f !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  color: #94a3b8 !important;
+  font-family: inherit !important;
+  font-size: 10px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: all 0.12s ease !important;
+  white-space: nowrap !important;
+  box-sizing: border-box !important;
+}
+
+.mm-preset-pill:hover {
+  background: #1e222b !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+  color: #f8fafc !important;
+}
+
+.mm-preset-pill.active {
+  background: rgba(16, 185, 129, 0.12) !important;
+  border-color: rgba(16, 185, 129, 0.35) !important;
+  color: #10b981 !important;
+}
+
+/* Section Header & Grid in HUD */
+.mm-section-header {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  padding-top: 2px !important;
+}
+
+.mm-section-title {
+  font-size: 9px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.05em !important;
+  text-transform: uppercase !important;
+  color: #64748b !important;
+}
+
+.mm-section-meta {
+  font-size: 9.5px !important;
+  color: #94a3b8 !important;
+}
+
+.mm-rules-grid {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 4px !important;
+  width: 100% !important;
+}
+
+.mm-hidden-chk {
+  position: absolute !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+.mm-rule-chip {
+  all: initial !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  height: 28px !important;
+  padding: 0 8px !important;
+  border-radius: 6px !important;
+  background: #14171f !important;
+  border: 1px solid rgba(255, 255, 255, 0.06) !important;
+  color: #94a3b8 !important;
+  font-family: inherit !important;
+  font-size: 10px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  user-select: none !important;
+  transition: all 0.12s ease !important;
+  box-sizing: border-box !important;
+}
+
+.mm-rule-chip:hover {
+  background: #1a1e28 !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+  color: #f8fafc !important;
+}
+
+.mm-rule-chip.active {
+  background: rgba(16, 185, 129, 0.1) !important;
+  border-color: rgba(16, 185, 129, 0.3) !important;
+  color: #f0fdf4 !important;
+}
+
+.mm-rule-chip-inner {
+  display: flex !important;
+  align-items: center !important;
+  gap: 5px !important;
+  min-width: 0 !important;
+}
+
+.mm-rule-chip-inner span {
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+.mm-rule-pip {
+  width: 4px !important;
+  height: 4px !important;
+  border-radius: 50% !important;
+  background: #475569 !important;
+  flex-shrink: 0 !important;
+  transition: background 0.12s ease !important;
+}
+
+.mm-rule-chip.active .mm-rule-pip {
+  background: #10b981 !important;
+  box-shadow: 0 0 6px #10b981 !important;
+}
+
+/* Tactical Actions */
+.mm-panic-trigger-btn {
+  all: initial !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  width: 100% !important;
+  height: 28px !important;
+  padding: 0 10px !important;
+  border-radius: 6px !important;
+  background: rgba(239, 68, 68, 0.1) !important;
+  border: 1px solid rgba(239, 68, 68, 0.25) !important;
+  color: #f87171 !important;
+  cursor: pointer !important;
+  box-sizing: border-box !important;
+  font-family: inherit !important;
+  font-size: 10.5px !important;
+  font-weight: 600 !important;
+  transition: all 0.12s ease !important;
+}
+
+.mm-panic-trigger-btn:hover {
+  background: rgba(239, 68, 68, 0.2) !important;
+  border-color: #ef4444 !important;
+  color: #ffffff !important;
+}
+
+.mm-panic-left {
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+}
+
+.mm-kbd {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
+  font-size: 9px !important;
+  padding: 1px 5px !important;
+  background: rgba(0, 0, 0, 0.35) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 4px !important;
+  color: #cbd5e1 !important;
+}
+
+.mm-actions-sub-row {
+  display: flex !important;
+  align-items: center !important;
+  gap: 5px !important;
+  width: 100% !important;
+}
+
+.mm-action-sub-btn {
+  all: initial !important;
+  flex: 1 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 5px !important;
+  height: 26px !important;
+  padding: 0 8px !important;
+  border-radius: 6px !important;
+  background: #14171f !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  color: #cbd5e1 !important;
+  font-family: inherit !important;
+  font-size: 10px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: all 0.12s ease !important;
+  box-sizing: border-box !important;
+}
+
+.mm-action-sub-btn:hover {
+  background: #1e222b !important;
+  border-color: rgba(255, 255, 255, 0.16) !important;
+  color: #ffffff !important;
+}
+
+.mm-btn-danger {
+  color: #f87171 !important;
+  border-color: rgba(239, 68, 68, 0.25) !important;
+}
+
+.mm-btn-danger:hover {
+  background: rgba(239, 68, 68, 0.15) !important;
+  border-color: #ef4444 !important;
+  color: #fca5a5 !important;
+}
+
+.mm-hint-pill {
+  flex: 1 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 5px !important;
+  height: 26px !important;
+  font-size: 9.5px !important;
+  color: #64748b !important;
+  user-select: none !important;
+}
+
+.mm-hint-pip {
+  width: 4px !important;
+  height: 4px !important;
+  border-radius: 50% !important;
+  background: #10b981 !important;
+  opacity: 0.8 !important;
+}
+
+/* 6. ELEMENT PICKER OVERLAY */
+.shield-picker-hover {
+  outline: 2px solid #10b981 !important;
+  outline-offset: -1px !important;
+  background-color: rgba(16, 185, 129, 0.12) !important;
+  cursor: crosshair !important;
+}
+
+.shield-picker-hover-blocked {
+  outline: 2px solid #ef4444 !important;
+  outline-offset: -1px !important;
+  background-color: rgba(239, 68, 68, 0.12) !important;
+  cursor: pointer !important;
+}
+
+/* Top Banner when in Element Picker Mode */
+#meetingmode-picker-banner {
+  position: fixed !important;
+  top: 14px !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  z-index: 2147483647 !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  padding: 8px 18px !important;
+  border-radius: 24px !important;
+  background: #090a0f !important;
+  color: #f8fafc !important;
+  border: 1px solid rgba(255, 255, 255, 0.18) !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5) !important;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  font-size: 12.5px !important;
+  font-weight: 600 !important;
+  pointer-events: auto !important;
+  animation: mm-banner-drop 0.18s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+@keyframes mm-banner-drop {
+  from { opacity: 0; transform: translate(-50%, -10px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
+}
+
+#meetingmode-picker-banner .mm-banner-dot {
+  width: 8px !important;
+  height: 8px !important;
+  border-radius: 50% !important;
+  background-color: #10b981 !important;
+  box-shadow: 0 0 8px #10b981 !important;
+}
+
+#meetingmode-picker-banner kbd {
+  padding: 2px 6px !important;
+  border-radius: 4px !important;
+  background: rgba(255, 255, 255, 0.14) !important;
+  border: 1px solid rgba(255, 255, 255, 0.22) !important;
+  font-family: ui-monospace, Menlo, monospace !important;
+  font-size: 10.5px !important;
+  font-weight: 600 !important;
+}
+
+/* 7. AVATAR & PROFILE PICTURE CLOAKER */
+.shield-masked-avatar {
+  filter: blur(8px) grayscale(85%) !important;
+  transition: filter 0.14s ease !important;
+  user-select: none !important;
+}
+
+.shield-masked-avatar:hover {
+  filter: none !important;
+  outline: 1.5px dashed #10b981 !important;
+  outline-offset: 1px !important;
+  user-select: auto !important;
+}
+
+/* 8. PRESENTATION SPOTLIGHT BEAM */
+#meetingmode-spotlight-backdrop {
+  position: fixed !important;
+  inset: 0 !important;
+  background: rgba(8, 10, 16, 0.44) !important;
+  pointer-events: none !important;
+  z-index: 2147483640 !important;
+  transition: opacity 0.22s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  opacity: 0 !important;
+}
+
+#meetingmode-spotlight-backdrop.active {
+  opacity: 1 !important;
+}
+
+.mm-spotlight-target {
+  position: relative !important;
+  z-index: 2147483642 !important;
+  box-shadow: 0 0 0 2px #10b981, 0 16px 44px rgba(0, 0, 0, 0.65) !important;
+  border-radius: 6px !important;
+  transition: box-shadow 0.15s ease !important;
+}
+
+/* 9. IN-PAGE HUD PRESET SELECTORS */
+.mm-presets-row {
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr) !important;
+  gap: 5px !important;
+  margin-bottom: 2px !important;
+}
+
+.mm-preset-btn {
+  all: initial !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 3px !important;
+  padding: 6px 4px !important;
+  border-radius: 6px !important;
+  background: #181b22 !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  color: #cbd5e1 !important;
+  cursor: pointer !important;
+  font-family: inherit !important;
+  font-size: 10.5px !important;
+  font-weight: 600 !important;
+  text-align: center !important;
+  transition: all 0.12s ease !important;
+}
+
+.mm-preset-btn:hover {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border-color: rgba(255, 255, 255, 0.2) !important;
+  color: #ffffff !important;
+}
+
+.mm-preset-btn.active {
+  background: rgba(16, 185, 129, 0.15) !important;
+  border-color: rgba(16, 185, 129, 0.4) !important;
+  color: #10b981 !important;
+}
+
+.mm-preset-icon {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+/* 10. NOTIFICATION SILENCING */
+.shield-notifications-silenced div[role="alert"]:not(#meetingmode-inpage-panel *):not(#meetingmode-floating-dock *),
+.shield-notifications-silenced div[class*="notification-popup" i],
+.shield-notifications-silenced div[class*="toast-container" i] > div,
+.shield-notifications-silenced div[class*="toast_container" i] > div {
+  filter: blur(8px) !important;
+  opacity: 0.1 !important;
+  pointer-events: none !important;
+  transition: opacity 0.2s ease, filter 0.2s ease !important;
+}
+
+.shield-notifications-silenced div[role="alert"]:hover,
+.shield-notifications-silenced div[class*="notification-popup" i]:hover {
+  filter: none !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+
+/* 11. EMERGENCY PANIC PRIVACY CURTAIN */
+#meetingmode-panic-curtain {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 2147483647 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: rgba(8, 10, 16, 0.92) !important;
+  backdrop-filter: blur(28px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(28px) saturate(180%) !important;
+  color: #f8fafc !important;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  text-align: center !important;
+  cursor: pointer !important;
+  user-select: none !important;
+  animation: mm-curtain-fade 0.16s ease-out !important;
+  padding: 24px !important;
+  box-sizing: border-box !important;
+}
+
+@keyframes mm-curtain-fade {
+  from { opacity: 0; backdrop-filter: blur(0px); }
+  to { opacity: 1; backdrop-filter: blur(28px); }
+}
+
+.mm-curtain-card {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  gap: 12px !important;
+  padding: 32px 36px !important;
+  border-radius: 16px !important;
+  background: rgba(18, 22, 32, 0.8) !important;
+  border: 1px solid rgba(255, 255, 255, 0.16) !important;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(16, 185, 129, 0.25) !important;
+  max-width: 420px !important;
+}
+
+.mm-curtain-badge {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  padding: 3px 10px !important;
+  border-radius: 20px !important;
+  background: rgba(16, 185, 129, 0.15) !important;
+  border: 1px solid rgba(16, 185, 129, 0.3) !important;
+  color: #10b981 !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.05em !important;
+  text-transform: uppercase !important;
+}
+
+.mm-curtain-title {
+  all: initial !important;
+  font-family: inherit !important;
+  font-size: 20px !important;
+  font-weight: 700 !important;
+  color: #f8fafc !important;
+  letter-spacing: -0.02em !important;
+  margin: 0 !important;
+}
+
+.mm-curtain-desc {
+  all: initial !important;
+  font-family: inherit !important;
+  font-size: 13px !important;
+  color: #94a3b8 !important;
+  line-height: 1.5 !important;
+  margin: 0 !important;
+}
+
+.mm-curtain-hints {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  font-size: 11.5px !important;
+  color: #64748b !important;
+  margin-top: 4px !important;
+}
+
+.mm-curtain-hints kbd {
+  padding: 2px 6px !important;
+  border-radius: 4px !important;
+  background: rgba(255, 255, 255, 0.1) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  color: #e2e8f0 !important;
+  font-family: ui-monospace, Menlo, monospace !important;
+  font-size: 10.5px !important;
+}
+
+.mm-curtain-resume-btn {
+  all: initial !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px !important;
+  margin-top: 8px !important;
+  padding: 8px 18px !important;
+  border-radius: 8px !important;
+  background: #10b981 !important;
+  color: #042f2e !important;
+  font-family: inherit !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  cursor: pointer !important;
+  transition: all 0.14s ease !important;
+}
+
+.mm-curtain-resume-btn:hover {
+  background: #34d399 !important;
+  transform: translateY(-1px) !important;
+}
+
+/* 12. GHOST INPUT CLOAKING */
+input.shield-masked-input:not(:focus),
+textarea.shield-masked-input:not(:focus),
+.shield-masked-input:not(:focus) {
+  -webkit-text-security: disc !important;
+  filter: blur(5px) !important;
+  opacity: 0.65 !important;
+  transition: filter 0.14s ease, opacity 0.14s ease !important;
+  cursor: text !important;
+}
+
+input.shield-masked-input:not(:focus):hover,
+textarea.shield-masked-input:not(:focus):hover,
+.shield-masked-input:not(:focus):hover {
+  filter: blur(1.5px) !important;
+  opacity: 0.85 !important;
+}
+
+input.shield-masked-input:focus,
+textarea.shield-masked-input:focus,
+.shield-masked-input:focus {
+  -webkit-text-security: none !important;
+  filter: none !important;
+  opacity: 1 !important;
+}
+
+

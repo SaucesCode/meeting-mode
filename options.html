@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MeetingMode • Preferences & Custom Rules</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+  <div class="options-shell">
+
+    <!-- SIDEBAR NAVIGATION -->
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <div class="brand-glyph">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <span class="brand-title">MeetingMode</span>
+          <span class="brand-sub">Privacy & Cloaking Portal</span>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <button class="nav-tab active" data-tab="tab-general">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+          </svg>
+          <span>General Shield Rules</span>
+        </button>
+
+        <button class="nav-tab" data-tab="tab-domains">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="2" y1="12" x2="22" y2="12"></line>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+          </svg>
+          <span>Domain Overrides</span>
+        </button>
+
+        <button class="nav-tab" data-tab="tab-keywords">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="4" y1="9" x2="20" y2="9"></line>
+            <line x1="4" y1="15" x2="20" y2="15"></line>
+            <line x1="10" y1="3" x2="8" y2="21"></line>
+            <line x1="16" y1="3" x2="14" y2="21"></line>
+          </svg>
+          <span>Custom Project Keywords</span>
+        </button>
+
+        <button class="nav-tab" data-tab="tab-autoarm">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polygon points="12 8 8 12 12 16 12 13 16 13 16 11 12 11 12 8"></polygon>
+          </svg>
+          <span>Auto-Arm & Meeting Sites</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <span class="version-label font-mono">v1.0.0 • Manifest V3</span>
+      </div>
+    </aside>
+
+    <!-- MAIN SETTINGS VIEW -->
+    <main class="main-content">
+
+      <!-- VIEW 1: GENERAL -->
+      <section id="tab-general" class="tab-view active">
+        <div class="view-header">
+          <h1 class="view-title">General Shield Rules</h1>
+          <p class="view-subtitle">Configure auto-detection triggers, masking behavior, and keyboard shortcuts.</p>
+        </div>
+
+        <div class="settings-card">
+          <div class="setting-row">
+            <div class="setting-meta">
+              <span class="setting-name">Interface Theme</span>
+              <span class="setting-desc">Switch between Obsidian Dark and Swiss Editorial Light modes.</span>
+            </div>
+            <select id="setting-theme" class="select-input">
+              <option value="dark">Stealth Dark Mode</option>
+              <option value="light">Editorial Light Mode</option>
+            </select>
+          </div>
+
+          <div class="setting-row">
+            <div class="setting-meta">
+              <span class="setting-name">Default Masking Mode</span>
+              <span class="setting-desc">Choose between frosted blur or synthetic realistic demo scramble.</span>
+            </div>
+            <select id="setting-mask-mode" class="select-input">
+              <option value="blur">Frosted Privacy Blur</option>
+              <option value="scramble">Demo Scramble (Synthetic Numbers & Emails)</option>
+            </select>
+          </div>
+
+          <div class="setting-row">
+            <div class="setting-meta">
+              <span class="setting-name">Default Shield Scope</span>
+              <span class="setting-desc">Choose default presentation scope: single active tab, current presentation window (multi-monitor safe), or all windows.</span>
+            </div>
+            <select id="setting-shield-scope" class="select-input">
+              <option value="tab">This Tab Only (Single Active Page)</option>
+              <option value="window">Active Presentation Window Only (Multi-Monitor Safe)</option>
+              <option value="global">All Windows & Monitors</option>
+            </select>
+          </div>
+
+          <div class="setting-row">
+            <div class="setting-meta">
+              <span class="setting-name">Emergency Panic Curtain</span>
+              <span class="setting-desc">Instant 1-key frosted privacy curtain concealing all screen contents during presentations.</span>
+            </div>
+            <span class="kbd-badge font-mono">Alt + Shift + B</span>
+          </div>
+
+          <div class="setting-row">
+            <div class="setting-meta">
+              <span class="setting-name">Ephemeral Reveal Key</span>
+              <span class="setting-desc">Key held down to peek temporarily at your own masked numbers while presenting.</span>
+            </div>
+            <span class="kbd-badge font-mono">Alt / Option (Default)</span>
+          </div>
+
+          <div class="setting-row">
+            <div class="setting-meta">
+              <span class="setting-name">Global Hotkey</span>
+              <span class="setting-desc">Keyboard shortcut to arm and disarm the privacy shield anywhere in Chrome.</span>
+            </div>
+            <span class="kbd-badge font-mono">Alt + Shift + M</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- VIEW 2: DOMAIN OVERRIDES -->
+      <section id="tab-domains" class="tab-view">
+        <div class="view-header">
+          <h1 class="view-title">Domain-Specific Shield Rules</h1>
+          <p class="view-subtitle">Elements shielded with the target picker (<kbd>Alt+Shift+S</kbd>) saved by hostname.</p>
+        </div>
+
+        <div class="settings-card">
+          <div id="domain-rules-list" class="domain-rules-container">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+      </section>
+
+      <!-- VIEW 3: CUSTOM KEYWORDS -->
+      <section id="tab-keywords" class="tab-view">
+        <div class="view-header">
+          <h1 class="view-title">Confidential Project Keywords</h1>
+          <p class="view-subtitle">Add custom project codenames, client names, or sensitive terms that MeetingMode should always mask.</p>
+        </div>
+
+        <div class="settings-card">
+          <div class="keyword-input-row">
+            <input type="text" id="new-keyword-input" placeholder="e.g. Project Apollo, Acme Corp, Stealth..." autocomplete="off">
+            <button id="btn-add-keyword" class="btn-solid">Add Term</button>
+          </div>
+
+          <div id="keywords-chips-list" class="keywords-chips-wrap">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+      </section>
+
+      <!-- VIEW 4: AUTO-ARM & MEETING SITES -->
+      <section id="tab-autoarm" class="tab-view">
+        <div class="view-header">
+          <h1 class="view-title">Auto-Arm & Meeting Rules</h1>
+          <p class="view-subtitle">Zero-thought security: automatically arm privacy shields when meeting apps or sensitive portals are opened.</p>
+        </div>
+
+        <div class="settings-card">
+          <div class="setting-row">
+            <div class="setting-meta">
+              <span class="setting-name">Auto-Arm on Meeting Apps</span>
+              <span class="setting-desc">Automatically arms when Google Meet, Zoom, MS Teams, or Loom is opened.</span>
+            </div>
+            <input type="checkbox" id="setting-auto-arm-meetings">
+          </div>
+
+          <div class="setting-row">
+            <div class="setting-meta">
+              <span class="setting-name">Web Notification & Sound Silencer</span>
+              <span class="setting-desc">Suppresses in-page toast alerts and mutes notification chimes while shield is armed.</span>
+            </div>
+            <input type="checkbox" id="setting-silence-notifications" checked>
+          </div>
+        </div>
+
+        <div class="settings-card" style="margin-top: 14px;">
+          <div class="view-header" style="margin-bottom: 10px;">
+            <span class="setting-name">Always-Cloaked Domains</span>
+            <span class="setting-desc" style="display:block;">Domains where MeetingMode should always automatically arm without manual clicking (e.g. Stripe, Banking, QuickBooks).</span>
+          </div>
+
+          <div class="keyword-input-row">
+            <input type="text" id="new-cloaked-domain-input" placeholder="e.g. stripe.com, paypal.com, app.hubspot.com..." autocomplete="off">
+            <button id="btn-add-cloaked-domain" class="btn-solid">Add Domain</button>
+          </div>
+
+          <div id="cloaked-domains-chips-list" class="keywords-chips-wrap">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+  </div>
+
+  <script src="options.js"></script>
+</body>
+</html>
