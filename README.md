@@ -18,6 +18,14 @@ Existing extensions require you to manually click every single element or draw c
 
 ## Key Features
 
+* **Clipboard Privacy Shield (Synthetic Copy Protection):**
+  * Presenters frequently copy text during product demos and sales calls to paste into a chat, terminal, or document.
+  * When the shield is armed, the Clipboard Privacy Shield automatically intercepts `Ctrl+C` / `Cmd+C` on masked elements:
+    * In **Demo Scramble Mode**: Copies synthetic demo values (`alex.client@demo-corp.com`, `$4,820`) rather than real sensitive data.
+    * In **Frosted Blur Mode**: Copies sanitized redaction tokens (`[REDACTED_FINANCIAL]`, `[REDACTED_API_SECRET]`, `[REDACTED_EMAIL]`).
+    * In **Ghost Form Inputs**: Sanitizes masked input values (`••••••••` or placeholder).
+  * If you intentionally click an element to unlock it (`Click to lock reveal`), standard copying of the real value is permitted.
+  * Displays a discreet in-page tactical toast pill (*"Clipboard Shield: Masked data sanitized"*) to give presenters 100% confidence that their clipboard is safe to paste anywhere.
 * **3-Way Presentation Scope ("Tab" vs "Window" vs "All Windows"):**
   * Matches Google Meet & Teams screen-sharing models:
     * **This Tab ("A Tab"):** Only the selected active tab is shielded. When you switch to another tab in the same window (e.g. your private dashboard or reference notes), it remains 100% clean and unmasked!

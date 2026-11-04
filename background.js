@@ -23,6 +23,7 @@ const DEFAULT_SETTINGS = {
   spotlightMode: false, // Presentation Spotlight beam mode
   dockPosition: null, // Draggable floating dock coords { left, top }
   cloakTabs: true,
+  protectClipboard: true, // Auto-redacts masked PII, secrets, and financials from clipboard buffer
   showFloatingBadge: true,
   domainOverrides: {},
   customKeywords: [],

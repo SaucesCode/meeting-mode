@@ -28,6 +28,7 @@
     spotlightMode: false, // Presentation Spotlight beam mode
     dockPosition: null, // Draggable floating dock coords { left, top }
     cloakTabs: true,
+    protectClipboard: true, // Auto-redacts masked PII, secrets, and financials from clipboard buffer
     showFloatingBadge: true,
     domainOverrides: {},
     customKeywords: []
@@ -107,6 +108,7 @@
     bindHoverAndClickHandlers();
     listenForMessages();
     setupMutationObserver();
+    initClipboardPrivacyShield();
   }
 
   /**
@@ -723,6 +725,138 @@
         el.classList.remove("shield-masked-input");
       });
     } catch (err) {}
+  }
+
+  /**
+   * Clipboard Privacy Shield
+   * Intercepts copy actions on masked elements and sensitive inputs during screen shares,
+   * preventing confidential balances, API secrets, or client PII from leaking into
+   * the clipboard buffer or chat windows.
+   */
+  let clipboardToastTimer = null;
+
+  function initClipboardPrivacyShield() {
+    document.addEventListener("copy", onDocumentCopy, true);
+  }
+
+  function getRedactedPlaceholder(type) {
+    switch (type) {
+      case "secret":
+        return "[REDACTED_API_SECRET]";
+      case "financial":
+        return "[REDACTED_FINANCIAL]";
+      case "email":
+        return "[REDACTED_EMAIL]";
+      case "number":
+        return "[REDACTED_ID]";
+      case "keyword":
+        return "[REDACTED_PROJECT]";
+      default:
+        return "[REDACTED_DATA]";
+    }
+  }
+
+  function onDocumentCopy(e) {
+    if (!settings.isEnabled || settings.protectClipboard === false) return;
+
+    // 1. Copying from an active form input or textarea
+    const activeEl = document.activeElement;
+    if (activeEl && (activeEl.tagName === "INPUT" || activeEl.tagName === "TEXTAREA")) {
+      if (activeEl.classList.contains("shield-masked-input")) {
+        const isPassword = activeEl.type === "password";
+        const val = activeEl.value || "";
+        const selStart = activeEl.selectionStart ?? 0;
+        const selEnd = activeEl.selectionEnd ?? val.length;
+        if (selStart !== selEnd) {
+          e.preventDefault();
+          const maskedOutput = isPassword ? "••••••••" : (settings.maskMode === "scramble" ? "demo_input_value" : "[REDACTED_INPUT]");
+          e.clipboardData.setData("text/plain", maskedOutput);
+          showClipboardToast("Clipboard Shield: Input value sanitized");
+          return;
+        }
+      }
+    }
+
+    // 2. Selection across DOM elements
+    const selection = window.getSelection();
+    if (!selection || selection.rangeCount === 0 || selection.isCollapsed) return;
+
+    const range = selection.getRangeAt(0);
+
+    // Check if selection is entirely within a single masked element
+    let container = range.commonAncestorContainer;
+    let maskedContainer = null;
+    if (container.nodeType === Node.ELEMENT_NODE) {
+      maskedContainer = container.closest(".shield-masked-blur, .shield-masked-scramble, .shield-custom-blocked");
+    } else if (container.parentElement) {
+      maskedContainer = container.parentElement.closest(".shield-masked-blur, .shield-masked-scramble, .shield-custom-blocked");
+    }
+
+    // If inside a single masked container that has NOT been deliberately unlocked by clicking
+    if (maskedContainer && !maskedContainer.classList.contains("shield-peek-active")) {
+      e.preventDefault();
+      let safeText = "";
+      if (maskedContainer.classList.contains("shield-masked-scramble")) {
+        safeText = maskedContainer.getAttribute("data-mm-synthetic") || maskedContainer.textContent;
+      } else if (maskedContainer.classList.contains("shield-masked-blur")) {
+        const type = maskedContainer.getAttribute("data-mm-type");
+        safeText = getRedactedPlaceholder(type);
+      } else {
+        safeText = "[REDACTED_CONTENT]";
+      }
+      e.clipboardData.setData("text/plain", safeText);
+      showClipboardToast("Clipboard Shield: Masked data sanitized");
+      return;
+    }
+
+    // Check if range spans multiple elements, some of which are masked
+    const fragment = range.cloneContents();
+    const maskedInFragment = fragment.querySelectorAll(".shield-masked-blur, .shield-masked-scramble, .shield-custom-blocked");
+
+    if (maskedInFragment.length > 0) {
+      let interceptedCount = 0;
+      maskedInFragment.forEach((el) => {
+        // Skip elements user has intentionally clicked to unlock
+        if (!el.classList.contains("shield-peek-active")) {
+          interceptedCount++;
+          if (el.classList.contains("shield-masked-scramble")) {
+            el.textContent = el.getAttribute("data-mm-synthetic") || el.textContent;
+          } else if (el.classList.contains("shield-masked-blur")) {
+            const type = el.getAttribute("data-mm-type");
+            el.textContent = getRedactedPlaceholder(type);
+          } else {
+            el.textContent = "[REDACTED_CONTENT]";
+          }
+        }
+      });
+
+      if (interceptedCount > 0) {
+        e.preventDefault();
+        const safeText = fragment.textContent;
+        e.clipboardData.setData("text/plain", safeText);
+        showClipboardToast(`Clipboard Shield: ${interceptedCount} masked ${interceptedCount === 1 ? 'item' : 'items'} sanitized`);
+      }
+    }
+  }
+
+  function showClipboardToast(message) {
+    let toast = document.getElementById("meetingmode-clipboard-toast");
+    if (!toast) {
+      toast = document.createElement("div");
+      toast.id = "meetingmode-clipboard-toast";
+      (document.body || document.documentElement).appendChild(toast);
+    }
+
+    toast.innerHTML = `
+      <span class="mm-toast-pip"></span>
+      <span class="mm-toast-text">${message}</span>
+    `;
+    toast.classList.add("visible");
+
+    if (clipboardToastTimer) clearTimeout(clipboardToastTimer);
+    clipboardToastTimer = setTimeout(() => {
+      if (toast) toast.classList.remove("visible");
+    }, 2400);
   }
 
   /**
@@ -1698,7 +1832,7 @@
 
   function isExtensionUi(target) {
     if (!target) return true;
-    return target === pickerBanner || Boolean(target.closest("#meetingmode-picker-banner, #meetingmode-floating-dock, #meetingmode-inpage-panel, #meetingmode-panic-curtain, #meetingmode-spotlight-backdrop"));
+    return target === pickerBanner || Boolean(target.closest("#meetingmode-picker-banner, #meetingmode-floating-dock, #meetingmode-inpage-panel, #meetingmode-panic-curtain, #meetingmode-spotlight-backdrop, #meetingmode-clipboard-toast"));
   }
 
   function blockCustomElement(el, selector) {

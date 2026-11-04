@@ -21,6 +21,7 @@ let settings = {
   silenceNotifications: true,
   spotlightMode: false,
   cloakTabs: true,
+  protectClipboard: true,
   domainOverrides: {},
   customKeywords: ["Project Titan", "Acme Confidential", "Stealth Launch"],
   theme: "dark"
@@ -67,6 +68,9 @@ async function loadSettings() {
 
   const silenceCheck = document.getElementById("setting-silence-notifications");
   if (silenceCheck) silenceCheck.checked = settings.silenceNotifications !== false;
+
+  const clipboardCheck = document.getElementById("setting-protect-clipboard");
+  if (clipboardCheck) clipboardCheck.checked = settings.protectClipboard !== false;
 }
 
 function initNavigation() {
@@ -112,6 +116,12 @@ function initFormHandlers() {
   // Silence Notifications
   document.getElementById("setting-silence-notifications")?.addEventListener("change", async (e) => {
     settings.silenceNotifications = e.target.checked;
+    await saveSettings();
+  });
+
+  // Protect Clipboard
+  document.getElementById("setting-protect-clipboard")?.addEventListener("change", async (e) => {
+    settings.protectClipboard = e.target.checked;
     await saveSettings();
   });
 

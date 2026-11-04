@@ -18,6 +18,7 @@ let currentSettings = {
   maskAvatars: true,
   maskInputs: true,
   cloakTabs: true,
+  protectClipboard: true,
   domainOverrides: {},
   theme: "dark"
 };
@@ -128,6 +129,7 @@ function renderUI() {
   setChecked("filter-spotlight", currentSettings.spotlightMode === true);
   setChecked("filter-messages", currentSettings.maskMessages !== false);
   setChecked("toggle-cloak-tabs", currentSettings.cloakTabs !== false);
+  setChecked("toggle-protect-clipboard", currentSettings.protectClipboard !== false);
   setChecked("toggle-notifications", currentSettings.silenceNotifications !== false);
   setChecked("toggle-floating-dock", currentSettings.showFloatingBadge !== false);
 
@@ -289,6 +291,7 @@ function initEventListeners() {
   bindCheckbox("filter-spotlight", "spotlightMode");
   bindCheckbox("filter-messages", "maskMessages");
   bindCheckbox("toggle-cloak-tabs", "cloakTabs");
+  bindCheckbox("toggle-protect-clipboard", "protectClipboard");
   bindCheckbox("toggle-notifications", "silenceNotifications");
   bindCheckbox("toggle-floating-dock", "showFloatingBadge");
 
