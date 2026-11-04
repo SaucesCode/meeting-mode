@@ -4,6 +4,287 @@
    and bottom-corner tactical HUD panel.
    ========================================================================== */
 
+/* ==========================================================================
+   0. CSP-IMMUNE EXTENSION CHAT, MESSAGE & MEDIA SHIELD
+   These rules live in content.css (extension author stylesheet) and are
+   100% exempt from Facebook, Messenger, and web Content-Security-Policies.
+   ========================================================================== */
+
+/* 0.1 Facebook & Messenger Chat Bubbles & Text Messages */
+html.shield-armed-messages div[data-pagelet*="ChatTab" i] div[dir="auto"],
+html.shield-armed-messages div[data-pagelet*="ChatTab" i] span[dir="auto"],
+html.shield-armed-messages div[data-pagelet*="Chat" i] div[dir="auto"],
+html.shield-armed-messages div[data-pagelet*="Chat" i] span[dir="auto"],
+html.shield-armed-messages div[data-pagelet*="Message" i] div[dir="auto"],
+html.shield-armed-messages div[data-pagelet*="Message" i] span[dir="auto"],
+html.shield-armed-messages div[role="region"][aria-label*="Chat" i] div[dir="auto"],
+html.shield-armed-messages div[role="region"][aria-label*="Chat" i] span[dir="auto"],
+html.shield-armed-messages div[aria-label*="Chat with" i] div[dir="auto"],
+html.shield-armed-messages div[aria-label*="Chat with" i] span[dir="auto"],
+html.shield-armed-messages div[aria-label*="Chats" i] div[dir="auto"],
+html.shield-armed-messages div[aria-label*="Chats" i] span[dir="auto"],
+html.shield-armed-messages div[aria-label*="Messenger" i] div[dir="auto"],
+html.shield-armed-messages div[aria-label*="Messenger" i] span[dir="auto"],
+html.shield-armed-messages div[aria-label*="Conversation" i] div[dir="auto"],
+html.shield-armed-messages div[aria-label*="Conversation" i] span[dir="auto"],
+html.shield-armed-messages div[aria-label*="Messages" i] div[dir="auto"],
+html.shield-armed-messages div[aria-label*="Messages" i] span[dir="auto"],
+html.shield-armed-messages div[data-scope="messages_table" i] div[dir="auto"],
+html.shield-armed-messages div[data-scope="messages_table" i] span[dir="auto"],
+html.shield-armed-messages div[role="grid"] div[role="row"] div[dir="auto"],
+html.shield-armed-messages div[role="grid"] div[role="row"] span[dir="auto"],
+html.shield-armed-messages div[role="dialog"] div[dir="auto"],
+html.shield-armed-messages div[role="dialog"] span[dir="auto"],
+html.shield-armed-messages div[data-testid*="message" i],
+html.shield-armed-messages div[data-testid*="chat" i],
+html[data-shield-app="messenger"].shield-armed-messages div[role="main"] div[dir="auto"],
+html[data-shield-app="messenger"].shield-armed-messages div[role="main"] span[dir="auto"],
+html[data-shield-app="messenger"].shield-armed-messages div[role="navigation"] div[dir="auto"],
+html[data-shield-app="messenger"].shield-armed-messages div[role="navigation"] span[dir="auto"],
+html[data-shield-app="messenger"].shield-armed-messages div[role="grid"] div[dir="auto"],
+html[data-shield-app="messenger"].shield-armed-messages div[role="grid"] span[dir="auto"],
+
+/* 0.2 Universal Messaging Apps (Discord, Slack, WhatsApp, Telegram, Teams, Skype) */
+html.shield-armed-messages div[class*='messageContent'],
+html.shield-armed-messages div[id^='message-content-'],
+html.shield-armed-messages div[class*='markup'][class*='message'],
+html.shield-armed-messages li[id^='chat-messages-'] div[class*='contents'],
+html.shield-armed-messages div[class*='repliedTextContent'],
+html.shield-armed-messages div[class*='embedDescription'],
+html.shield-armed-messages div.message-in,
+html.shield-armed-messages div.message-out,
+html.shield-armed-messages div[data-testid='msg-container'],
+html.shield-armed-messages div[data-testid='conversation-panel-body'] span.selectable-text,
+html.shield-armed-messages div.copyable-text,
+html.shield-armed-messages .c-message_kit__text,
+html.shield-armed-messages .c-message__body,
+html.shield-armed-messages div[data-qa='message_content'],
+html.shield-armed-messages div[data-qa='message-text'],
+html.shield-armed-messages .p-rich_text_section,
+html.shield-armed-messages div[data-tid='chat-message-text'],
+html.shield-armed-messages div[data-tid='messageBody'],
+html.shield-armed-messages .message-content,
+html.shield-armed-messages .text-content,
+html.shield-armed-messages .message-text,
+html.shield-armed-messages .bubble-content,
+html.shield-armed-messages div[data-testid='messageEntry'] {
+  filter: blur(6.5px) !important;
+  transition: filter 0.12s ease !important;
+  user-select: none !important;
+}
+
+/* 0.3 Hover-to-Peek for Text Messages */
+html.shield-armed-messages div[data-pagelet*="ChatTab" i] div[dir="auto"]:hover,
+html.shield-armed-messages div[data-pagelet*="ChatTab" i] span[dir="auto"]:hover,
+html.shield-armed-messages div[data-pagelet*="Chat" i] div[dir="auto"]:hover,
+html.shield-armed-messages div[data-pagelet*="Chat" i] span[dir="auto"]:hover,
+html.shield-armed-messages div[data-pagelet*="Message" i] div[dir="auto"]:hover,
+html.shield-armed-messages div[data-pagelet*="Message" i] span[dir="auto"]:hover,
+html.shield-armed-messages div[role="region"][aria-label*="Chat" i] div[dir="auto"]:hover,
+html.shield-armed-messages div[role="region"][aria-label*="Chat" i] span[dir="auto"]:hover,
+html.shield-armed-messages div[aria-label*="Chat with" i] div[dir="auto"]:hover,
+html.shield-armed-messages div[aria-label*="Chat with" i] span[dir="auto"]:hover,
+html.shield-armed-messages div[aria-label*="Chats" i] div[dir="auto"]:hover,
+html.shield-armed-messages div[aria-label*="Chats" i] span[dir="auto"]:hover,
+html.shield-armed-messages div[aria-label*="Messenger" i] div[dir="auto"]:hover,
+html.shield-armed-messages div[aria-label*="Messenger" i] span[dir="auto"]:hover,
+html.shield-armed-messages div[aria-label*="Conversation" i] div[dir="auto"]:hover,
+html.shield-armed-messages div[aria-label*="Conversation" i] span[dir="auto"]:hover,
+html.shield-armed-messages div[aria-label*="Messages" i] div[dir="auto"]:hover,
+html.shield-armed-messages div[aria-label*="Messages" i] span[dir="auto"]:hover,
+html.shield-armed-messages div[data-scope="messages_table" i] div[dir="auto"]:hover,
+html.shield-armed-messages div[data-scope="messages_table" i] span[dir="auto"]:hover,
+html.shield-armed-messages div[role="grid"] div[role="row"] div[dir="auto"]:hover,
+html.shield-armed-messages div[role="grid"] div[role="row"] span[dir="auto"]:hover,
+html.shield-armed-messages div[role="dialog"] div[dir="auto"]:hover,
+html.shield-armed-messages div[role="dialog"] span[dir="auto"]:hover,
+html[data-shield-app="messenger"].shield-armed-messages div[role="main"] div[dir="auto"]:hover,
+html[data-shield-app="messenger"].shield-armed-messages div[role="main"] span[dir="auto"]:hover,
+html[data-shield-app="messenger"].shield-armed-messages div[role="navigation"] div[dir="auto"]:hover,
+html[data-shield-app="messenger"].shield-armed-messages div[role="navigation"] span[dir="auto"]:hover,
+html[data-shield-app="messenger"].shield-armed-messages div[role="grid"] div[dir="auto"]:hover,
+html[data-shield-app="messenger"].shield-armed-messages div[role="grid"] span[dir="auto"]:hover,
+html.shield-armed-messages div[class*='messageContent']:hover,
+html.shield-armed-messages div[id^='message-content-']:hover,
+html.shield-armed-messages div[class*='markup'][class*='message']:hover,
+html.shield-armed-messages div[class*='repliedTextContent']:hover,
+html.shield-armed-messages div.message-in:hover,
+html.shield-armed-messages div.message-out:hover,
+html.shield-armed-messages div.copyable-text:hover,
+html.shield-armed-messages .c-message_kit__text:hover,
+html.shield-armed-messages .c-message__body:hover,
+html.shield-armed-messages div[data-qa='message_content']:hover,
+html.shield-armed-messages div[data-tid='chat-message-text']:hover,
+html.shield-armed-messages .message-content:hover,
+html.shield-armed-messages div[data-testid='messageEntry']:hover {
+  filter: none !important;
+  outline: 1.5px dashed #10b981 !important;
+  outline-offset: 1px !important;
+  user-select: text !important;
+}
+
+/* 0.4 Chat Images, Screenshots, Attachments & Media (Deep 16px Blur) */
+html.shield-armed-media div[data-pagelet*="ChatTab" i] img,
+html.shield-armed-media div[data-pagelet*="ChatTab" i] video,
+html.shield-armed-media div[data-pagelet*="ChatTab" i] div[role="img"],
+html.shield-armed-media div[data-pagelet*="Chat" i] img,
+html.shield-armed-media div[data-pagelet*="Chat" i] video,
+html.shield-armed-media div[data-pagelet*="Chat" i] div[role="img"],
+html.shield-armed-media div[data-pagelet*="Message" i] img,
+html.shield-armed-media div[data-pagelet*="Message" i] video,
+html.shield-armed-media div[data-pagelet*="Message" i] div[role="img"],
+html.shield-armed-media div[role="region"][aria-label*="Chat" i] img,
+html.shield-armed-media div[role="region"][aria-label*="Chat" i] video,
+html.shield-armed-media div[role="region"][aria-label*="Chat" i] div[role="img"],
+html.shield-armed-media div[aria-label*="Chat with" i] img,
+html.shield-armed-media div[aria-label*="Chat with" i] video,
+html.shield-armed-media div[aria-label*="Conversation" i] img,
+html.shield-armed-media div[aria-label*="Messages" i] img,
+html.shield-armed-media div[data-scope="messages_table" i] img,
+html.shield-armed-media div[role="grid"] div[role="row"] img,
+html.shield-armed-media div[role="grid"] div[role="row"] video,
+html.shield-armed-media div[role="grid"] div[role="row"] div[role="img"],
+html.shield-armed-media a[href*="facebook.com/photo"] img,
+html.shield-armed-media a[href*="messenger.com/photo"] img,
+html.shield-armed-media div[aria-label*="Photo" i] img,
+html.shield-armed-media div[aria-label*="Attachment" i] img,
+html[data-shield-app="messenger"].shield-armed-media div[role="main"] img,
+html[data-shield-app="messenger"].shield-armed-media div[role="main"] video,
+html[data-shield-app="messenger"].shield-armed-media div[role="main"] div[role="img"],
+html[data-shield-app="messenger"].shield-armed-media div[role="grid"] img,
+html[data-shield-app="messenger"].shield-armed-media div[role="grid"] video,
+html[data-shield-app="messenger"].shield-armed-media div[role="grid"] div[role="img"],
+html.shield-armed-media div[class*='imageWrapper'],
+html.shield-armed-media div[class*='attachment_'],
+html.shield-armed-media div[class*='mediaAttachments'],
+html.shield-armed-media div[class*='embedMedia'],
+html.shield-armed-media div[class*='embedThumbnail'],
+html.shield-armed-media div[class*='mosaicItem'],
+html.shield-armed-media div[data-testid='media-content'],
+html.shield-armed-media div[data-testid='image-thumb'],
+html.shield-armed-media div[data-testid='image-thumb'] img,
+html.shield-armed-media div[data-testid='sticker-container'],
+html.shield-armed-media div._amkd img,
+html.shield-armed-media .c-message_attachment,
+html.shield-armed-media .p-file_image_thumbnail,
+html.shield-armed-media .c-image_canvas,
+html.shield-armed-media div[data-qa='file_container'] img,
+html.shield-armed-media .media-photo,
+html.shield-armed-media .media-video,
+html.shield-armed-media .media-container img,
+html.shield-armed-media div[data-tid='chat-message-image'] {
+  filter: blur(16px) !important;
+  opacity: 0.65 !important;
+  transition: filter 0.16s ease, opacity 0.16s ease !important;
+  user-select: none !important;
+}
+
+/* 0.5 Hover-to-Peek for Chat Images & Media */
+html.shield-armed-media div[data-pagelet*="ChatTab" i] img:hover,
+html.shield-armed-media div[data-pagelet*="ChatTab" i] video:hover,
+html.shield-armed-media div[data-pagelet*="ChatTab" i] div[role="img"]:hover,
+html.shield-armed-media div[data-pagelet*="Chat" i] img:hover,
+html.shield-armed-media div[data-pagelet*="Chat" i] video:hover,
+html.shield-armed-media div[data-pagelet*="Chat" i] div[role="img"]:hover,
+html.shield-armed-media div[data-pagelet*="Message" i] img:hover,
+html.shield-armed-media div[data-pagelet*="Message" i] video:hover,
+html.shield-armed-media div[data-pagelet*="Message" i] div[role="img"]:hover,
+html.shield-armed-media div[role="region"][aria-label*="Chat" i] img:hover,
+html.shield-armed-media div[role="region"][aria-label*="Chat" i] video:hover,
+html.shield-armed-media div[role="region"][aria-label*="Chat" i] div[role="img"]:hover,
+html.shield-armed-media div[aria-label*="Chat with" i] img:hover,
+html.shield-armed-media div[aria-label*="Chat with" i] video:hover,
+html.shield-armed-media div[aria-label*="Conversation" i] img:hover,
+html.shield-armed-media div[aria-label*="Messages" i] img:hover,
+html.shield-armed-media div[data-scope="messages_table" i] img:hover,
+html.shield-armed-media div[role="grid"] div[role="row"] img:hover,
+html.shield-armed-media div[role="grid"] div[role="row"] video:hover,
+html.shield-armed-media div[role="grid"] div[role="row"] div[role="img"]:hover,
+html.shield-armed-media a[href*="facebook.com/photo"] img:hover,
+html.shield-armed-media a[href*="messenger.com/photo"] img:hover,
+html.shield-armed-media div[aria-label*="Photo" i] img:hover,
+html.shield-armed-media div[aria-label*="Attachment" i] img:hover,
+html[data-shield-app="messenger"].shield-armed-media div[role="main"] img:hover,
+html[data-shield-app="messenger"].shield-armed-media div[role="main"] video:hover,
+html[data-shield-app="messenger"].shield-armed-media div[role="main"] div[role="img"]:hover,
+html[data-shield-app="messenger"].shield-armed-media div[role="grid"] img:hover,
+html[data-shield-app="messenger"].shield-armed-media div[role="grid"] video:hover,
+html[data-shield-app="messenger"].shield-armed-media div[role="grid"] div[role="img"]:hover,
+html.shield-armed-media div[class*='imageWrapper']:hover,
+html.shield-armed-media div[class*='attachment_']:hover,
+html.shield-armed-media div[class*='mediaAttachments']:hover,
+html.shield-armed-media div[class*='embedMedia']:hover,
+html.shield-armed-media div[data-testid='media-content']:hover,
+html.shield-armed-media div[data-testid='image-thumb']:hover,
+html.shield-armed-media div[data-testid='image-thumb'] img:hover,
+html.shield-armed-media div._amkd img:hover,
+html.shield-armed-media .c-message_attachment:hover,
+html.shield-armed-media .p-file_image_thumbnail:hover,
+html.shield-armed-media div[data-qa='file_container'] img:hover,
+html.shield-armed-media .media-photo:hover,
+html.shield-armed-media .media-container img:hover,
+html.shield-armed-media div[data-tid='chat-message-image']:hover {
+  filter: none !important;
+  opacity: 1 !important;
+  outline: 2px dashed #10b981 !important;
+  outline-offset: 2px !important;
+  user-select: auto !important;
+  cursor: pointer !important;
+}
+
+/* 0.6 Avatars & Profile Photos */
+html.shield-armed-avatars img[class*='avatar' i],
+html.shield-armed-avatars div[class*='avatar' i] img,
+html.shield-armed-avatars span[class*='avatar' i] img,
+html.shield-armed-avatars img[class*='profile-pic' i],
+html.shield-armed-avatars img[class*='profile_pic' i],
+html.shield-armed-avatars img[class*='profile-image' i],
+html.shield-armed-avatars img[alt*='avatar' i],
+html.shield-armed-avatars img[alt*='profile picture' i],
+html.shield-armed-avatars div[data-pagelet*='ChatTab' i] img[class*='avatar' i],
+html.shield-armed-avatars img[class*='c-avatar__image'],
+html.shield-armed-avatars .c-avatar,
+html.shield-armed-avatars .avatar-element,
+html.shield-armed-avatars .user-avatar,
+html.shield-armed-avatars div[data-testid*='UserAvatar'] img {
+  filter: blur(6.5px) !important;
+  transition: filter 0.12s ease !important;
+  user-select: none !important;
+}
+
+html.shield-armed-avatars img[class*='avatar' i]:hover,
+html.shield-armed-avatars div[class*='avatar' i] img:hover,
+html.shield-armed-avatars span[class*='avatar' i] img:hover,
+html.shield-armed-avatars img[class*='profile-pic' i]:hover,
+html.shield-armed-avatars img[class*='profile_pic' i]:hover,
+html.shield-armed-avatars img[alt*='avatar' i]:hover,
+html.shield-armed-avatars img[alt*='profile picture' i]:hover,
+html.shield-armed-avatars .c-avatar:hover {
+  filter: none !important;
+  outline: 1.5px dashed #10b981 !important;
+  outline-offset: 1px !important;
+  user-select: auto !important;
+}
+
+/* 0.7 Strict Safety Exemptions: Extension UI & Typing inputs are NEVER blurred */
+div[role="textbox"],
+div[role="textbox"] *,
+div[data-lexical-editor="true"],
+div[data-lexical-editor="true"] *,
+[contenteditable="true"]:not(.shield-masked-input),
+[contenteditable="true"]:not(.shield-masked-input) *,
+input:not(.shield-masked-input),
+textarea:not(.shield-masked-input),
+#meetingmode-floating-dock, #meetingmode-floating-dock *,
+#meetingmode-inpage-panel, #meetingmode-inpage-panel *,
+#meetingmode-panic-curtain, #meetingmode-panic-curtain *,
+#meetingmode-spotlight-backdrop, #meetingmode-spotlight-backdrop *,
+#meetingmode-picker-banner, #meetingmode-picker-banner *,
+#meetingmode-clipboard-toast, #meetingmode-clipboard-toast * {
+  filter: none !important;
+  opacity: 1 !important;
+}
+
 /* 1. MASKED INLINE TEXT / DATA */
 .shield-masked-blur {
   filter: blur(5.5px) !important;

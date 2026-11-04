@@ -115,6 +115,30 @@
    * Applies or lifts the privacy shield based on settings
    */
   function applyShieldState() {
+    const isArmed = Boolean(settings.isEnabled);
+
+    // Root classes for CSP-immune extension stylesheet rules (Facebook, Messenger, Discord, etc.)
+    document.documentElement.classList.toggle("shield-armed", isArmed);
+    document.documentElement.classList.toggle("shield-armed-messages", isArmed && settings.maskMessages !== false);
+    document.documentElement.classList.toggle("shield-armed-media", isArmed && settings.maskMessages !== false);
+    document.documentElement.classList.toggle("shield-armed-avatars", isArmed && settings.maskAvatars !== false);
+
+    // Identify messaging platforms for high-specificity platform rules
+    const host = window.location.hostname.toLowerCase();
+    if (host.includes("messenger.com")) {
+      document.documentElement.setAttribute("data-shield-app", "messenger");
+    } else if (host.includes("facebook.com")) {
+      document.documentElement.setAttribute("data-shield-app", "facebook");
+    } else if (host.includes("discord.com")) {
+      document.documentElement.setAttribute("data-shield-app", "discord");
+    } else if (host.includes("whatsapp.com")) {
+      document.documentElement.setAttribute("data-shield-app", "whatsapp");
+    } else if (host.includes("slack.com")) {
+      document.documentElement.setAttribute("data-shield-app", "slack");
+    } else if (host.includes("teams.microsoft.com")) {
+      document.documentElement.setAttribute("data-shield-app", "teams");
+    }
+
     // 1. Synchronous 0ms CSS Shield (Messages + Avatars)
     injectZeroDelayCSS();
 
@@ -168,7 +192,16 @@
     if (!styleEl) {
       styleEl = document.createElement("style");
       styleEl.id = "meetingmode-css-shield";
+      const existingNonce = document.querySelector("style[nonce], script[nonce]")?.getAttribute("nonce") || document.querySelector("style[nonce], script[nonce]")?.nonce;
+      if (existingNonce) {
+        styleEl.setAttribute("nonce", existingNonce);
+      }
       (document.head || document.documentElement).appendChild(styleEl);
+    } else {
+      const existingNonce = document.querySelector("style[nonce], script[nonce]")?.getAttribute("nonce") || document.querySelector("style[nonce], script[nonce]")?.nonce;
+      if (existingNonce && !styleEl.getAttribute("nonce")) {
+        styleEl.setAttribute("nonce", existingNonce);
+      }
     }
 
     const host = window.location.hostname.toLowerCase();
@@ -1829,6 +1862,15 @@
    * Unmasks and restores all elements
    */
   function unmaskAllElements() {
+    // 0. Remove root classes for CSP-immune extension stylesheet
+    document.documentElement.classList.remove(
+      "shield-armed",
+      "shield-armed-messages",
+      "shield-armed-media",
+      "shield-armed-avatars",
+      "shield-notifications-silenced"
+    );
+
     // 1. Text node restorations from Set
     maskedElements.forEach((span) => {
       if (span && span.parentNode) {
