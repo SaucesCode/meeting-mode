@@ -364,8 +364,138 @@
       );
     }
 
+    // 14. Chat Message Images, Photo Attachments, Screenshots & Media Previews
+    const mediaAttachmentSelectors = [];
+    if (settings.maskMessages !== false) {
+      // Universal Chat Attachments & Images
+      mediaAttachmentSelectors.push(
+        "div[class*='attachment' i] img",
+        "div[class*='attachment' i] video",
+        "div[class*='chat-image' i]",
+        "div[class*='message-image' i]",
+        "div[class*='media-content' i] img",
+        "div[class*='media-attachment' i]"
+      );
+
+      // Facebook & Messenger Media Attachments
+      if (host.includes("facebook.com") || host.includes("messenger.com")) {
+        mediaAttachmentSelectors.push(
+          "div[data-testid='message_container'] img:not([class*='avatar'])",
+          "div[data-pagelet*='ChatTab'] img:not([class*='avatar'])",
+          "div[data-pagelet*='Chat'] img:not([class*='avatar'])",
+          "div[aria-label*='Photo' i] img",
+          "div[aria-label*='Attachment' i] img",
+          "div[data-testid='outgoing_group'] img:not([class*='avatar'])",
+          "div[data-testid='incoming_group'] img:not([class*='avatar'])"
+        );
+      }
+
+      // Discord Media Attachments, Embeds & Uploads
+      if (host.includes("discord.com")) {
+        mediaAttachmentSelectors.push(
+          "div[class*='imageWrapper']",
+          "div[class*='attachment_']",
+          "div[class*='mediaAttachments']",
+          "div[class*='embedMedia']",
+          "div[class*='embedThumbnail']",
+          "div[class*='mosaicItem']",
+          "div[class*='oneByOneGrid']",
+          "div[class*='visualMediaItemContainer']",
+          "a[class*='originalLink'] img",
+          "div[class*='mediaAttachments'] img",
+          "div[class*='mediaAttachments'] video"
+        );
+      }
+
+      // WhatsApp Web Media Bubbles & Thumbnails
+      if (host.includes("whatsapp.com")) {
+        mediaAttachmentSelectors.push(
+          "div[data-testid='media-content']",
+          "div[data-testid='image-thumb']",
+          "div[data-testid='image-thumb'] img",
+          "div[data-testid='sticker-container']",
+          "div[data-testid='video-content']",
+          "div._amkd img",
+          "div.message-in div[role='button'] img",
+          "div.message-out div[role='button'] img"
+        );
+      }
+
+      // Telegram Web Photos, Stickers & Media
+      if (host.includes("telegram.org")) {
+        mediaAttachmentSelectors.push(
+          ".media-photo",
+          ".media-video",
+          ".media-container img",
+          ".sticker-content",
+          ".album-item",
+          ".attachment-image",
+          ".media-inner img"
+        );
+      }
+
+      // Slack File Previews & Pasted Screenshots
+      if (host.includes("slack.com")) {
+        mediaAttachmentSelectors.push(
+          ".c-message_attachment",
+          ".p-file_image_thumbnail",
+          ".c-image_canvas",
+          "div[data-qa='file_container']",
+          "div[data-qa='file_container'] img",
+          ".p-rich_text_file",
+          ".c-message__attachments img"
+        );
+      }
+
+      // Microsoft Teams Image Attachments
+      if (host.includes("teams.microsoft.com")) {
+        mediaAttachmentSelectors.push(
+          "div[data-tid='chat-message-image']",
+          "div[data-tid='image-container'] img",
+          "div[data-tid='attachment-item'] img"
+        );
+      }
+
+      // Instagram Direct Photos & Media
+      if (host.includes("instagram.com")) {
+        mediaAttachmentSelectors.push(
+          "div[aria-label*='Messages' i] div[role='button'] img:not([class*='avatar'])",
+          "div[aria-label*='Direct' i] div[role='button'] img:not([class*='avatar'])",
+          "div[data-testid='direct_thread'] img:not([class*='avatar'])"
+        );
+      }
+
+      // Twitter / X DMs Media
+      if (host.includes("twitter.com") || host.includes("x.com")) {
+        mediaAttachmentSelectors.push(
+          "div[data-testid='messageEntry'] div[data-testid='tweetPhoto']",
+          "div[data-testid='messageEntry'] img:not([class*='avatar'])",
+          "div[data-testid='DMDrawer'] div[data-testid='tweetPhoto']"
+        );
+      }
+
+      // LinkedIn Messaging Attachments
+      if (host.includes("linkedin.com")) {
+        mediaAttachmentSelectors.push(
+          ".msg-s-message-list-container .msg-s-event-listitem__body img:not([class*='avatar'])",
+          ".msg-s-message-list-container [class*='attachment']"
+        );
+      }
+
+      // Google Chat / Meet Shared Images
+      if (host.includes("google.com")) {
+        mediaAttachmentSelectors.push(
+          "div[aria-label*='In-call messages' i] img:not([class*='avatar'])",
+          "div[data-message-id] img:not([class*='avatar'])"
+        );
+      }
+    }
+
     const selectors = activeSelectors.join(",\n");
     const hoverSelectors = activeSelectors.map(s => s + ":hover").join(",\n");
+
+    const mediaSelectors = mediaAttachmentSelectors.join(",\n");
+    const mediaHoverSelectors = mediaAttachmentSelectors.map(s => s + ":hover").join(",\n");
 
     styleEl.textContent = `
       ${selectors} {
@@ -379,6 +509,25 @@
         outline-offset: 1px !important;
         user-select: text !important;
       }
+
+      /* Chat Images & Media Attachments (Deep Blur + Smooth Hover-to-Peek) */
+      ${mediaSelectors ? `
+      ${mediaSelectors} {
+        filter: blur(16px) !important;
+        opacity: 0.65 !important;
+        transition: filter 0.16s ease, opacity 0.16s ease !important;
+        user-select: none !important;
+      }
+      ${mediaHoverSelectors} {
+        filter: none !important;
+        opacity: 1 !important;
+        outline: 2px dashed #10b981 !important;
+        outline-offset: 2px !important;
+        user-select: auto !important;
+        cursor: pointer !important;
+      }
+      ` : ""}
+
       /* Safety: Never blur typing in uncloaked inputs or extension UI */
       input:not(.shield-masked-input),
       textarea:not(.shield-masked-input),
@@ -388,8 +537,10 @@
       #meetingmode-floating-dock, #meetingmode-floating-dock *,
       #meetingmode-inpage-panel, #meetingmode-inpage-panel *,
       #meetingmode-spotlight-backdrop, #meetingmode-spotlight-backdrop *,
-      #meetingmode-picker-banner, #meetingmode-picker-banner * {
+      #meetingmode-picker-banner, #meetingmode-picker-banner *,
+      #meetingmode-clipboard-toast, #meetingmode-clipboard-toast * {
         filter: none !important;
+        opacity: 1 !important;
       }
 
       /* Ghost Form & Password Input Cloaking (0ms Priority) */

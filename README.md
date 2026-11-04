@@ -45,17 +45,22 @@ Existing extensions require you to manually click every single element or draw c
   * **Identity & PII:** Automatically masks user emails (`*@*.com`) and phone numbers.
   * **Secrets & Keys:** Automatically shields API keys (`sk_live_...`, `ghp_...`, bearer tokens).
   * **Auto-Shield for Facebook, Messenger, Discord, WhatsApp, Slack & Teams:**
-    * Automatically blurs message bubbles, header popover flyouts, conversation snippets, channel text, and chat docks across:
-      * **Facebook & Messenger** (`facebook.com`, `messenger.com` - header dropdown flyout, conversation previews, floating ChatTabs, messages)
-      * **Discord** (`discord.com` - channels, DMs, message content, replies, embeds)
-      * **WhatsApp Web** (`web.whatsapp.com` - message list, chat bubbles)
-      * **Slack** (`slack.com`, `app.slack.com` - channels, DMs, threads)
-      * **Telegram Web** (`web.telegram.org` - dialogs, message bubbles)
-      * **Microsoft Teams** (`teams.microsoft.com` - chat panes, thread posts)
-      * **Instagram Direct** (`instagram.com` - inbox, direct messages)
-      * **Twitter / X DMs** (`x.com`, `twitter.com` - direct message drawer)
+    * Automatically blurs message bubbles, header popover flyouts, conversation snippets, channel text, and chat docks across all major communication apps.
+    * **Chat Images, Photo Attachments & Screenshots Cloaker:**
+      * Coworkers pasting bug screenshots, dashboard snippets, invoices, or personal memes into channels is one of the highest risk leak vectors on screen share.
+      * Automatically cloaks media attachments, image embeds, file thumbnails, and stickers with a deep privacy blur (`blur(16px)`).
+      * **Hover-to-Peek:** Hovering over any blurred screenshot or image unblurs it immediately for your eyes only with an emerald border.
+    * **Supported Platforms:**
+      * **Facebook & Messenger** (`facebook.com`, `messenger.com` - header dropdown flyout, conversation previews, floating ChatTabs, messages, photo attachments)
+      * **Discord** (`discord.com` - channels, DMs, message content, replies, embeds, image attachments)
+      * **WhatsApp Web** (`web.whatsapp.com` - message list, chat bubbles, image thumbnails, media content, stickers)
+      * **Slack** (`slack.com`, `app.slack.com` - channels, DMs, threads, pasted screenshots, file canvas previews)
+      * **Telegram Web** (`web.telegram.org` - dialogs, message bubbles, media photos, stickers)
+      * **Microsoft Teams** (`teams.microsoft.com` - chat panes, thread posts, image attachments)
+      * **Instagram Direct** (`instagram.com` - inbox, direct messages, photos)
+      * **Twitter / X DMs** (`x.com`, `twitter.com` - direct message drawer, photo attachments)
       * **Google Chat & Meet** (`mail.google.com`, `chat.google.com`, `meet.google.com`)
-    * **Hover to Read:** Moving your mouse over any message unblurs it instantly so *you* can read and reply, and it re-blurs the millisecond your mouse moves away!
+    * **Hover to Read:** Moving your mouse over any message or attachment unblurs it instantly so *you* can read and reply, and it re-blurs the millisecond your mouse moves away!
   * **Confidential Keywords:** Add custom project codenames (e.g. *"Project Titan"*, *"Acme Corp"*) in options to mask them everywhere.
 * **Instant Hover-to-Peek (Zero Clicks Needed):**
   * **Simply hover your mouse** over any blurred price, email, or chat message to reveal it instantly! Move your mouse away, and it re-blurs immediately.
