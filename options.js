@@ -34,6 +34,12 @@ document.addEventListener("DOMContentLoaded", async () => {
   renderDomainRules();
   renderKeywords();
   renderCloakedDomains();
+
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get("welcome") === "true") {
+    const welcomeBanner = document.getElementById("welcome-banner");
+    if (welcomeBanner) welcomeBanner.style.display = "block";
+  }
 });
 
 async function loadSettings() {

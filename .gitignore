@@ -17,3 +17,4 @@ desktop.ini
 dist/
 tmp/
 *.tmp
+*.zip

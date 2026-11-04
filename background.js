@@ -41,7 +41,7 @@ const MEETING_DOMAINS = [
 ];
 
 // Initialize settings on installation or reload
-chrome.runtime.onInstalled.addListener(async () => {
+chrome.runtime.onInstalled.addListener(async (details) => {
   try {
     const existing = await chrome.storage.local.get("meetingModeSettings");
     let current = existing?.meetingModeSettings || DEFAULT_SETTINGS;
@@ -55,6 +55,11 @@ chrome.runtime.onInstalled.addListener(async () => {
     }
     await chrome.storage.local.set({ meetingModeSettings: current });
     await updateBadgeForActiveTab(current);
+    setupContextMenus();
+
+    if (details && details.reason === "install") {
+      chrome.tabs.create({ url: "options.html?welcome=true" });
+    }
   } catch (err) {
     // Storage fallback
   }
@@ -68,52 +73,122 @@ chrome.runtime.onStartup.addListener(async () => {
   settings.isEnabled = false;
   await chrome.storage.local.set({ meetingModeSettings: settings });
   await updateBadgeForActiveTab(settings);
+  setupContextMenus();
 });
+
+/**
+ * Sets up right-click Context Menus for instant page protection
+ */
+function setupContextMenus() {
+  if (!chrome.contextMenus) return;
+  chrome.contextMenus.removeAll(() => {
+    chrome.contextMenus.create({
+      id: "mm-toggle-shield",
+      title: "Toggle Privacy Shield (Alt+Shift+M)",
+      contexts: ["page", "selection"]
+    });
+    chrome.contextMenus.create({
+      id: "mm-toggle-lockdown",
+      title: "Screen Share Lockdown Mode (Blur for Both)",
+      contexts: ["page", "selection"]
+    });
+    chrome.contextMenus.create({
+      id: "mm-panic-curtain",
+      title: "Emergency Panic Curtain (Alt+Shift+B)",
+      contexts: ["page", "selection"]
+    });
+    chrome.contextMenus.create({
+      id: "mm-pick-element",
+      title: "Target Specific Element to Mask",
+      contexts: ["page", "selection"]
+    });
+  });
+}
+
+// Handle Context Menu Actions
+if (chrome.contextMenus && chrome.contextMenus.onClicked) {
+  chrome.contextMenus.onClicked.addListener(async (info, tab) => {
+    if (!tab || !tab.id) return;
+
+    if (info.menuItemId === "mm-toggle-shield") {
+      await toggleShieldForTab(tab);
+    } else if (info.menuItemId === "mm-toggle-lockdown") {
+      const settings = await getSettings();
+      settings.maskMode = "lockdown";
+      settings.isEnabled = true;
+      if (settings.shieldScope === "tab") {
+        if (!settings.armedTabIds) settings.armedTabIds = [];
+        if (!settings.armedTabIds.includes(tab.id)) settings.armedTabIds.push(tab.id);
+      } else if (settings.shieldScope === "window" && tab.windowId) {
+        if (!settings.armedWindowIds) settings.armedWindowIds = [];
+        if (!settings.armedWindowIds.includes(tab.windowId)) settings.armedWindowIds.push(tab.windowId);
+      }
+      await chrome.storage.local.set({ meetingModeSettings: settings });
+      updateBadge(true);
+      broadcastScopeAware(settings);
+    } else if (info.menuItemId === "mm-panic-curtain") {
+      chrome.tabs.sendMessage(tab.id, { type: "TOGGLE_PANIC" }, () => {
+        if (chrome.runtime.lastError) {}
+      });
+    } else if (info.menuItemId === "mm-pick-element") {
+      chrome.tabs.sendMessage(tab.id, { type: "START_PICKER" }, () => {
+        if (chrome.runtime.lastError) {}
+      });
+    }
+  });
+}
+
+/**
+ * Toggles shield state respecting tab / window / global scope
+ */
+async function toggleShieldForTab(activeTab) {
+  const settings = await getSettings();
+  const currentWindowId = activeTab?.windowId;
+  const currentTabId = activeTab?.id;
+
+  if (settings.shieldScope === "tab" && currentTabId) {
+    let armedTabs = settings.armedTabIds || [];
+    const isCurrentlyArmed = armedTabs.includes(currentTabId);
+
+    if (isCurrentlyArmed) {
+      armedTabs = armedTabs.filter(id => id !== currentTabId);
+    } else {
+      armedTabs.push(currentTabId);
+    }
+
+    settings.armedTabIds = armedTabs;
+    settings.isEnabled = armedTabs.length > 0;
+    await chrome.storage.local.set({ meetingModeSettings: settings });
+    updateBadge(!isCurrentlyArmed);
+    broadcastScopeAware(settings);
+  } else if (settings.shieldScope === "window" && currentWindowId) {
+    let armedList = settings.armedWindowIds || [];
+    const isCurrentlyArmed = armedList.includes(currentWindowId);
+
+    if (isCurrentlyArmed) {
+      armedList = armedList.filter(id => id !== currentWindowId);
+    } else {
+      armedList.push(currentWindowId);
+    }
+
+    settings.armedWindowIds = armedList;
+    settings.isEnabled = armedList.length > 0;
+    await chrome.storage.local.set({ meetingModeSettings: settings });
+    updateBadge(!isCurrentlyArmed);
+    broadcastScopeAware(settings);
+  } else {
+    settings.isEnabled = !settings.isEnabled;
+    await chrome.storage.local.set({ meetingModeSettings: settings });
+    updateBadge(settings.isEnabled);
+    broadcastScopeAware(settings);
+  }
+}
 
 // Keyboard Commands (Alt+Shift+M, Alt+Shift+S, Alt+Shift+P, Alt+Shift+B)
 chrome.commands.onCommand.addListener(async (command) => {
   if (command === "toggle-shield") {
-    const settings = await getSettings();
     const [activeTab] = await chrome.tabs.query({ active: true, currentWindow: true });
-    const currentWindowId = activeTab?.windowId;
-    const currentTabId = activeTab?.id;
-
-    if (settings.shieldScope === "tab" && currentTabId) {
-      let armedTabs = settings.armedTabIds || [];
-      const isCurrentlyArmed = armedTabs.includes(currentTabId);
-
-      if (isCurrentlyArmed) {
-        armedTabs = armedTabs.filter(id => id !== currentTabId);
-      } else {
-        armedTabs.push(currentTabId);
-      }
-
-      settings.armedTabIds = armedTabs;
-      settings.isEnabled = armedTabs.length > 0;
-      await chrome.storage.local.set({ meetingModeSettings: settings });
-      updateBadge(!isCurrentlyArmed);
-      broadcastScopeAware(settings);
-    } else if (settings.shieldScope === "window" && currentWindowId) {
-      let armedList = settings.armedWindowIds || [];
-      const isCurrentlyArmed = armedList.includes(currentWindowId);
-
-      if (isCurrentlyArmed) {
-        armedList = armedList.filter(id => id !== currentWindowId);
-      } else {
-        armedList.push(currentWindowId);
-      }
-
-      settings.armedWindowIds = armedList;
-      settings.isEnabled = armedList.length > 0;
-      await chrome.storage.local.set({ meetingModeSettings: settings });
-      updateBadge(!isCurrentlyArmed);
-      broadcastScopeAware(settings);
-    } else {
-      settings.isEnabled = !settings.isEnabled;
-      await chrome.storage.local.set({ meetingModeSettings: settings });
-      updateBadge(settings.isEnabled);
-      broadcastScopeAware(settings);
-    }
+    await toggleShieldForTab(activeTab);
   }
 
   if (command === "pick-element") {
@@ -146,6 +221,25 @@ chrome.commands.onCommand.addListener(async (command) => {
   }
 });
 
+/**
+ * Detects whether an active online meeting tab is running
+ */
+async function detectActiveMeeting() {
+  try {
+    const tabs = await chrome.tabs.query({});
+    for (const tab of tabs) {
+      if (!tab.url) continue;
+      const url = tab.url.toLowerCase();
+      if (url.includes("meet.google.com")) return "Google Meet";
+      if (url.includes("zoom.us")) return "Zoom";
+      if (url.includes("teams.microsoft.com")) return "Microsoft Teams";
+      if (url.includes("slack.com")) return "Slack Huddle";
+      if (url.includes("web.webex.com")) return "Webex";
+    }
+  } catch (err) {}
+  return null;
+}
+
 // Runtime Message Listener (Synchronizes scope-aware state from popup & HUD)
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.type === "GET_TAB_SHIELD_STATE") {
@@ -163,11 +257,13 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         tabIsEnabled = windowId ? (settings.armedWindowIds || []).includes(windowId) : false;
       }
 
+      const activeMeeting = await detectActiveMeeting();
       const tabSettings = Object.assign({}, settings, { isEnabled: tabIsEnabled });
       sendResponse({
         settings: tabSettings,
         tabId,
-        windowId
+        windowId,
+        activeMeeting
       });
     })();
     return true;

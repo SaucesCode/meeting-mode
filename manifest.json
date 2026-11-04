@@ -1,12 +1,14 @@
 {
   "manifest_version": 3,
-  "name": "MeetingMode • Presentation Shield & Data Cloaker",
+  "name": "MeetingMode - Screen Share Privacy Shield",
+  "short_name": "MeetingMode",
   "version": "1.0.0",
   "description": "Zero-click privacy shield for screen sharing & demos. Automatically masks financials, emails, API keys, and sensitive tab titles.",
   "permissions": [
     "storage",
     "activeTab",
-    "tabs"
+    "tabs",
+    "contextMenus"
   ],
   "host_permissions": [
     "<all_urls>"

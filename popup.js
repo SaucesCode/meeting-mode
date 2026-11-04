@@ -182,6 +182,21 @@ async function initActiveTab() {
       }
     }
 
+    // Check if an active meeting app is running
+    chrome.runtime.sendMessage({ type: "GET_TAB_SHIELD_STATE" }, (res) => {
+      if (chrome.runtime.lastError || !res) return;
+      const radarPill = document.getElementById("meeting-radar-pill");
+      if (radarPill) {
+        if (res.activeMeeting) {
+          radarPill.textContent = res.activeMeeting.toUpperCase();
+          radarPill.title = `Active meeting session detected in browser: ${res.activeMeeting}`;
+          radarPill.style.display = "inline-flex";
+        } else {
+          radarPill.style.display = "none";
+        }
+      }
+    });
+
     // Query content script for live shielded element count and custom overrides
     if (activeTabId) {
       chrome.tabs.sendMessage(activeTabId, { type: "GET_STATS" }, (response) => {
