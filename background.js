@@ -9,7 +9,7 @@ const DEFAULT_SETTINGS = {
   shieldScope: "window", // "tab" (Single active tab) | "window" (Active presentation window) | "global" (All windows/monitors)
   armedTabIds: [], // Tab IDs where shield is active (when scope === "tab")
   armedWindowIds: [], // Window IDs where shield is currently active
-  maskMode: "blur", // "blur" | "scramble"
+  maskMode: "blur", // "blur" (standard hover peek) | "lockdown" (blur for both presenter & screen share) | "scramble"
   maskFinancials: true,
   maskEmails: true,
   maskSecrets: true,

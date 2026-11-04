@@ -413,11 +413,11 @@ body::-webkit-scrollbar {
 }
 
 .micro-segment-scope {
-  flex: 1.35;
+  flex: 1;
 }
 
 .micro-segment-mode {
-  flex: 1;
+  flex: 1.25;
 }
 
 .micro-segment-btn {

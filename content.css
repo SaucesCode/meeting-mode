@@ -285,6 +285,124 @@ textarea:not(.shield-masked-input),
   opacity: 1 !important;
 }
 
+/* 0.8 SCREEN SHARE LOCKDOWN MODE (Blur for Both: Presenter & Screen-Share Viewers)
+   Stays 100% blurred on hover to prevent accidental leaks while presenting.
+   Presenter can deliberately peek by holding down the Alt key. */
+html.shield-lockdown:not(.shield-alt-held).shield-armed-messages div[data-pagelet*="ChatTab" i] div[dir="auto"]:hover,
+html.shield-lockdown:not(.shield-alt-held).shield-armed-messages div[data-pagelet*="ChatTab" i] span[dir="auto"]:hover,
+html.shield-lockdown:not(.shield-alt-held).shield-armed-messages div[data-pagelet*="Chat" i] div[dir="auto"]:hover,
+html.shield-lockdown:not(.shield-alt-held).shield-armed-messages div[data-pagelet*="Chat" i] span[dir="auto"]:hover,
+html.shield-lockdown:not(.shield-alt-held).shield-armed-messages div[data-pagelet*="Message" i] div[dir="auto"]:hover,
+html.shield-lockdown:not(.shield-alt-held).shield-armed-messages div[data-pagelet*="Message" i] span[dir="auto"]:hover,
+html.shield-lockdown:not(.shield-alt-held).shield-armed-messages div[role="region"][aria-label*="Chat" i] div[dir="auto"]:hover,
+html.shield-lockdown:not(.shield-alt-held).shield-armed-messages div[role="region"][aria-label*="Chat" i] span[dir="auto"]:hover,
+html.shield-lockdown:not(.shield-alt-held).shield-armed-messages div[aria-label*="Chat with" i] div[dir="auto"]:hover,
+html.shield-lockdown:not(.shield-alt-held).shield-armed-messages div[aria-label*="Chat with" i] span[dir="auto"]:hover,
+html.shield-lockdown:not(.shield-alt-held).shield-armed-messages div[aria-label*="Chats" i] div[dir="auto"]:hover,
+html.shield-lockdown:not(.shield-alt-held).shield-armed-messages div[aria-label*="Chats" i] span[dir="auto"]:hover,
+html.shield-lockdown:not(.shield-alt-held).shield-armed-messages div[aria-label*="Messenger" i] div[dir="auto"]:hover,
+html.shield-lockdown:not(.shield-alt-held).shield-armed-messages div[aria-label*="Messenger" i] span[dir="auto"]:hover,
+html.shield-lockdown:not(.shield-alt-held).shield-armed-messages div[aria-label*="Conversation" i] div[dir="auto"]:hover,
+html.shield-lockdown:not(.shield-alt-held).shield-armed-messages div[aria-label*="Conversation" i] span[dir="auto"]:hover,
+html.shield-lockdown:not(.shield-alt-held).shield-armed-messages div[aria-label*="Messages" i] div[dir="auto"]:hover,
+html.shield-lockdown:not(.shield-alt-held).shield-armed-messages div[aria-label*="Messages" i] span[dir="auto"]:hover,
+html.shield-lockdown:not(.shield-alt-held).shield-armed-messages div[data-scope="messages_table" i] div[dir="auto"]:hover,
+html.shield-lockdown:not(.shield-alt-held).shield-armed-messages div[data-scope="messages_table" i] span[dir="auto"]:hover,
+html.shield-lockdown:not(.shield-alt-held).shield-armed-messages div[role="grid"] div[role="row"] div[dir="auto"]:hover,
+html.shield-lockdown:not(.shield-alt-held).shield-armed-messages div[role="grid"] div[role="row"] span[dir="auto"]:hover,
+html.shield-lockdown:not(.shield-alt-held).shield-armed-messages div[role="dialog"] div[dir="auto"]:hover,
+html.shield-lockdown:not(.shield-alt-held).shield-armed-messages div[role="dialog"] span[dir="auto"]:hover,
+html[data-shield-app="messenger"].shield-lockdown:not(.shield-alt-held).shield-armed-messages div[role="main"] div[dir="auto"]:hover,
+html[data-shield-app="messenger"].shield-lockdown:not(.shield-alt-held).shield-armed-messages div[role="main"] span[dir="auto"]:hover,
+html[data-shield-app="messenger"].shield-lockdown:not(.shield-alt-held).shield-armed-messages div[role="navigation"] div[dir="auto"]:hover,
+html[data-shield-app="messenger"].shield-lockdown:not(.shield-alt-held).shield-armed-messages div[role="navigation"] span[dir="auto"]:hover,
+html[data-shield-app="messenger"].shield-lockdown:not(.shield-alt-held).shield-armed-messages div[role="grid"] div[dir="auto"]:hover,
+html[data-shield-app="messenger"].shield-lockdown:not(.shield-alt-held).shield-armed-messages div[role="grid"] span[dir="auto"]:hover,
+html.shield-lockdown:not(.shield-alt-held).shield-armed-messages div[class*='messageContent']:hover,
+html.shield-lockdown:not(.shield-alt-held).shield-armed-messages div[id^='message-content-']:hover,
+html.shield-lockdown:not(.shield-alt-held).shield-armed-messages div[class*='markup'][class*='message']:hover,
+html.shield-lockdown:not(.shield-alt-held).shield-armed-messages div[class*='repliedTextContent']:hover,
+html.shield-lockdown:not(.shield-alt-held).shield-armed-messages div.message-in:hover,
+html.shield-lockdown:not(.shield-alt-held).shield-armed-messages div.message-out:hover,
+html.shield-lockdown:not(.shield-alt-held).shield-armed-messages div.copyable-text:hover,
+html.shield-lockdown:not(.shield-alt-held).shield-armed-messages .c-message_kit__text:hover,
+html.shield-lockdown:not(.shield-alt-held).shield-armed-messages .c-message__body:hover,
+html.shield-lockdown:not(.shield-alt-held).shield-armed-messages div[data-qa='message_content']:hover,
+html.shield-lockdown:not(.shield-alt-held).shield-armed-messages div[data-tid='chat-message-text']:hover,
+html.shield-lockdown:not(.shield-alt-held).shield-armed-messages .message-content:hover,
+html.shield-lockdown:not(.shield-alt-held).shield-armed-messages div[data-testid='messageEntry']:hover,
+html.shield-lockdown:not(.shield-alt-held) .shield-masked-blur:hover {
+  filter: blur(6.5px) !important;
+  outline: none !important;
+  user-select: none !important;
+  cursor: default !important;
+  background-color: rgba(16, 185, 129, 0.09) !important;
+}
+
+html.shield-lockdown:not(.shield-alt-held).shield-armed-media div[data-pagelet*="ChatTab" i] img:hover,
+html.shield-lockdown:not(.shield-alt-held).shield-armed-media div[data-pagelet*="ChatTab" i] video:hover,
+html.shield-lockdown:not(.shield-alt-held).shield-armed-media div[data-pagelet*="ChatTab" i] div[role="img"]:hover,
+html.shield-lockdown:not(.shield-alt-held).shield-armed-media div[data-pagelet*="Chat" i] img:hover,
+html.shield-lockdown:not(.shield-alt-held).shield-armed-media div[data-pagelet*="Chat" i] video:hover,
+html.shield-lockdown:not(.shield-alt-held).shield-armed-media div[data-pagelet*="Chat" i] div[role="img"]:hover,
+html.shield-lockdown:not(.shield-alt-held).shield-armed-media div[data-pagelet*="Message" i] img:hover,
+html.shield-lockdown:not(.shield-alt-held).shield-armed-media div[data-pagelet*="Message" i] video:hover,
+html.shield-lockdown:not(.shield-alt-held).shield-armed-media div[data-pagelet*="Message" i] div[role="img"]:hover,
+html.shield-lockdown:not(.shield-alt-held).shield-armed-media div[role="region"][aria-label*="Chat" i] img:hover,
+html.shield-lockdown:not(.shield-alt-held).shield-armed-media div[role="region"][aria-label*="Chat" i] video:hover,
+html.shield-lockdown:not(.shield-alt-held).shield-armed-media div[role="region"][aria-label*="Chat" i] div[role="img"]:hover,
+html.shield-lockdown:not(.shield-alt-held).shield-armed-media div[aria-label*="Chat with" i] img:hover,
+html.shield-lockdown:not(.shield-alt-held).shield-armed-media div[aria-label*="Chat with" i] video:hover,
+html.shield-lockdown:not(.shield-alt-held).shield-armed-media div[aria-label*="Conversation" i] img:hover,
+html.shield-lockdown:not(.shield-alt-held).shield-armed-media div[aria-label*="Messages" i] img:hover,
+html.shield-lockdown:not(.shield-alt-held).shield-armed-media div[data-scope="messages_table" i] img:hover,
+html.shield-lockdown:not(.shield-alt-held).shield-armed-media div[role="grid"] div[role="row"] img:hover,
+html.shield-lockdown:not(.shield-alt-held).shield-armed-media div[role="grid"] div[role="row"] video:hover,
+html.shield-lockdown:not(.shield-alt-held).shield-armed-media div[role="grid"] div[role="row"] div[role="img"]:hover,
+html.shield-lockdown:not(.shield-alt-held).shield-armed-media a[href*="facebook.com/photo"] img:hover,
+html.shield-lockdown:not(.shield-alt-held).shield-armed-media a[href*="messenger.com/photo"] img:hover,
+html.shield-lockdown:not(.shield-alt-held).shield-armed-media div[aria-label*="Photo" i] img:hover,
+html.shield-lockdown:not(.shield-alt-held).shield-armed-media div[aria-label*="Attachment" i] img:hover,
+html[data-shield-app="messenger"].shield-lockdown:not(.shield-alt-held).shield-armed-media div[role="main"] img:hover,
+html[data-shield-app="messenger"].shield-lockdown:not(.shield-alt-held).shield-armed-media div[role="main"] video:hover,
+html[data-shield-app="messenger"].shield-lockdown:not(.shield-alt-held).shield-armed-media div[role="main"] div[role="img"]:hover,
+html[data-shield-app="messenger"].shield-lockdown:not(.shield-alt-held).shield-armed-media div[role="grid"] img:hover,
+html[data-shield-app="messenger"].shield-lockdown:not(.shield-alt-held).shield-armed-media div[role="grid"] video:hover,
+html[data-shield-app="messenger"].shield-lockdown:not(.shield-alt-held).shield-armed-media div[role="grid"] div[role="img"]:hover,
+html.shield-lockdown:not(.shield-alt-held).shield-armed-media div[class*='imageWrapper']:hover,
+html.shield-lockdown:not(.shield-alt-held).shield-armed-media div[class*='attachment_']:hover,
+html.shield-lockdown:not(.shield-alt-held).shield-armed-media div[class*='mediaAttachments']:hover,
+html.shield-lockdown:not(.shield-alt-held).shield-armed-media div[class*='embedMedia']:hover,
+html.shield-lockdown:not(.shield-alt-held).shield-armed-media div[data-testid='media-content']:hover,
+html.shield-lockdown:not(.shield-alt-held).shield-armed-media div[data-testid='image-thumb']:hover,
+html.shield-lockdown:not(.shield-alt-held).shield-armed-media div[data-testid='image-thumb'] img:hover,
+html.shield-lockdown:not(.shield-alt-held).shield-armed-media div._amkd img:hover,
+html.shield-lockdown:not(.shield-alt-held).shield-armed-media .c-message_attachment:hover,
+html.shield-lockdown:not(.shield-alt-held).shield-armed-media .p-file_image_thumbnail:hover,
+html.shield-lockdown:not(.shield-alt-held).shield-armed-media div[data-qa='file_container'] img:hover,
+html.shield-lockdown:not(.shield-alt-held).shield-armed-media .media-photo:hover,
+html.shield-lockdown:not(.shield-alt-held).shield-armed-media .media-container img:hover,
+html.shield-lockdown:not(.shield-alt-held).shield-armed-media div[data-tid='chat-message-image']:hover {
+  filter: blur(16px) !important;
+  opacity: 0.65 !important;
+  outline: none !important;
+  user-select: none !important;
+  cursor: default !important;
+}
+
+html.shield-lockdown:not(.shield-alt-held).shield-armed-avatars img[class*='avatar' i]:hover,
+html.shield-lockdown:not(.shield-alt-held).shield-armed-avatars div[class*='avatar' i] img:hover,
+html.shield-lockdown:not(.shield-alt-held).shield-armed-avatars span[class*='avatar' i] img:hover,
+html.shield-lockdown:not(.shield-alt-held).shield-armed-avatars img[class*='profile-pic' i]:hover,
+html.shield-lockdown:not(.shield-alt-held).shield-armed-avatars img[class*='profile_pic' i]:hover,
+html.shield-lockdown:not(.shield-alt-held).shield-armed-avatars img[alt*='avatar' i]:hover,
+html.shield-lockdown:not(.shield-alt-held).shield-armed-avatars img[alt*='profile picture' i]:hover,
+html.shield-lockdown:not(.shield-alt-held).shield-armed-avatars .c-avatar:hover {
+  filter: blur(6.5px) !important;
+  outline: none !important;
+  user-select: none !important;
+}
+
 /* 1. MASKED INLINE TEXT / DATA */
 .shield-masked-blur {
   filter: blur(5.5px) !important;
@@ -708,11 +826,11 @@ textarea:not(.shield-masked-input),
 }
 
 .mm-micro-segment-scope {
-  flex: 1.35 !important;
+  flex: 1 !important;
 }
 
 .mm-micro-segment-mode {
-  flex: 1 !important;
+  flex: 1.25 !important;
 }
 
 .mm-micro-btn {

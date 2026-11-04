@@ -108,15 +108,28 @@ function renderUI() {
   scopeWindowBtn?.classList.toggle("active", currentSettings.shieldScope === "window");
   scopeGlobalBtn?.classList.toggle("active", currentSettings.shieldScope === "global");
 
-  // Segment Buttons (Blur vs Scramble)
+  // 3-Way Mode Segment Buttons (Blur vs Lockdown vs Scramble)
   const blurBtn = document.getElementById("btn-mode-blur");
+  const lockdownBtn = document.getElementById("btn-mode-lockdown");
   const scrambleBtn = document.getElementById("btn-mode-scramble");
-  if (currentSettings.maskMode === "scramble") {
-    scrambleBtn?.classList.add("active");
-    blurBtn?.classList.remove("active");
-  } else {
-    blurBtn?.classList.add("active");
-    scrambleBtn?.classList.remove("active");
+  const isLockdown = currentSettings.maskMode === "lockdown";
+  const isScramble = currentSettings.maskMode === "scramble";
+  const isBlur = !isLockdown && !isScramble;
+
+  blurBtn?.classList.toggle("active", isBlur);
+  lockdownBtn?.classList.toggle("active", isLockdown);
+  scrambleBtn?.classList.toggle("active", isScramble);
+
+  // Telemetry Peek Hint
+  const peekHintEl = document.querySelector(".telemetry-peek-hint span:last-child");
+  if (peekHintEl) {
+    if (isLockdown) {
+      peekHintEl.textContent = "Lockdown: Hold Alt to peek";
+    } else if (isScramble) {
+      peekHintEl.textContent = "Hover item to reveal real data";
+    } else {
+      peekHintEl.textContent = "Hover item to peek";
+    }
   }
 
   // Checkbox Filters
@@ -135,7 +148,7 @@ function renderUI() {
 
   // Preset Buttons
   document.getElementById("popup-preset-demo")?.classList.toggle("active", currentSettings.maskMode === "scramble");
-  document.getElementById("popup-preset-meeting")?.classList.toggle("active", currentSettings.maskMode === "blur" && !currentSettings.spotlightMode);
+  document.getElementById("popup-preset-meeting")?.classList.toggle("active", (currentSettings.maskMode === "blur" || currentSettings.maskMode === "lockdown") && !currentSettings.spotlightMode);
   document.getElementById("popup-preset-loom")?.classList.toggle("active", currentSettings.spotlightMode === true);
 }
 
@@ -276,6 +289,10 @@ function initEventListeners() {
     e.stopPropagation();
     setMaskMode("blur");
   });
+  document.getElementById("btn-mode-lockdown")?.addEventListener("click", (e) => {
+    e.stopPropagation();
+    setMaskMode("lockdown");
+  });
   document.getElementById("btn-mode-scramble")?.addEventListener("click", (e) => {
     e.stopPropagation();
     setMaskMode("scramble");
@@ -310,7 +327,7 @@ function initEventListeners() {
 
   document.getElementById("popup-preset-meeting")?.addEventListener("click", async () => {
     armCurrentScope();
-    currentSettings.maskMode = "blur";
+    currentSettings.maskMode = "lockdown";
     currentSettings.maskMessages = true;
     currentSettings.maskAvatars = true;
     currentSettings.silenceNotifications = true;

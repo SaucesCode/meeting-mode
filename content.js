@@ -14,7 +14,7 @@
     shieldScope: "window", // "tab" | "window" | "global"
     armedTabIds: [],
     armedWindowIds: [],
-    maskMode: "blur", // "blur" | "scramble"
+    maskMode: "blur", // "blur" (standard hover peek) | "lockdown" (blur for both presenter & screen share) | "scramble"
     maskFinancials: true,
     maskEmails: true,
     maskSecrets: true,
@@ -122,6 +122,7 @@
     document.documentElement.classList.toggle("shield-armed-messages", isArmed && settings.maskMessages !== false);
     document.documentElement.classList.toggle("shield-armed-media", isArmed && settings.maskMessages !== false);
     document.documentElement.classList.toggle("shield-armed-avatars", isArmed && settings.maskAvatars !== false);
+    document.documentElement.classList.toggle("shield-lockdown", isArmed && settings.maskMode === "lockdown");
 
     // Identify messaging platforms for high-specificity platform rules
     const host = window.location.hostname.toLowerCase();
@@ -530,13 +531,21 @@
     const mediaSelectors = mediaAttachmentSelectors.join(",\n");
     const mediaHoverSelectors = mediaAttachmentSelectors.map(s => s + ":hover").join(",\n");
 
+    const isLockdown = settings.maskMode === "lockdown";
+    const effectiveHoverSelectors = isLockdown
+      ? activeSelectors.map(s => `html.shield-alt-held ${s}:hover`).join(",\n")
+      : hoverSelectors;
+    const effectiveMediaHoverSelectors = isLockdown
+      ? mediaAttachmentSelectors.map(s => `html.shield-alt-held ${s}:hover`).join(",\n")
+      : mediaHoverSelectors;
+
     styleEl.textContent = `
       ${selectors} {
         filter: blur(6.5px) !important;
         transition: filter 0.12s ease !important;
         user-select: none !important;
       }
-      ${hoverSelectors} {
+      ${effectiveHoverSelectors} {
         filter: none !important;
         outline: 1.5px dashed #10b981 !important;
         outline-offset: 1px !important;
@@ -551,7 +560,7 @@
         transition: filter 0.16s ease, opacity 0.16s ease !important;
         user-select: none !important;
       }
-      ${mediaHoverSelectors} {
+      ${effectiveMediaHoverSelectors} {
         filter: none !important;
         opacity: 1 !important;
         outline: 2px dashed #10b981 !important;
@@ -793,11 +802,29 @@
    * Hover-to-Peek & Click-to-Lock Handlers
    */
   function bindHoverAndClickHandlers() {
+    // Presenter Stealth Peek: Hold Alt key to peek during Screen Share Lockdown
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "Alt" && !document.documentElement.classList.contains("shield-alt-held")) {
+        document.documentElement.classList.add("shield-alt-held");
+      }
+    }, true);
+
+    window.addEventListener("keyup", (e) => {
+      if (e.key === "Alt") {
+        document.documentElement.classList.remove("shield-alt-held");
+      }
+    }, true);
+
+    window.addEventListener("blur", () => {
+      document.documentElement.classList.remove("shield-alt-held");
+    });
+
     document.addEventListener("mouseover", (e) => {
       const target = e.target;
       if (!target || !target.classList) return;
 
       if (target.classList.contains("shield-masked-scramble")) {
+        if (settings.maskMode === "lockdown" && !e.altKey) return;
         const original = target.getAttribute("data-mm-original");
         if (original) target.textContent = original;
       }
@@ -1368,7 +1395,9 @@
 
     let masterDesc = "";
     if (settings.isEnabled) {
-      if (settings.shieldScope === "tab") {
+      if (settings.maskMode === "lockdown") {
+        masterDesc = "Screen-Share Lockdown: 100% blurred for all (Hold Alt to peek)";
+      } else if (settings.shieldScope === "tab") {
         masterDesc = "Active tab cloaked (other tabs clean)";
       } else if (settings.shieldScope === "window") {
         masterDesc = "Active window cloaked (notes safe on 2nd monitor)";
@@ -1376,7 +1405,9 @@
         masterDesc = "Sensitive data cloaked across all windows";
       }
     } else {
-      if (settings.shieldScope === "tab") {
+      if (settings.maskMode === "lockdown") {
+        masterDesc = "Click to arm Screen-Share Lockdown (blur for both you & viewers)";
+      } else if (settings.shieldScope === "tab") {
         masterDesc = "Click to arm privacy cloak on active tab";
       } else if (settings.shieldScope === "window") {
         masterDesc = "Click to arm privacy cloak on active window";
@@ -1438,9 +1469,13 @@
           </div>
 
           <div class="mm-micro-segment mm-micro-segment-mode" title="Masking Mode">
-            <button class="mm-micro-btn ${settings.maskMode !== "scramble" ? "active" : ""}" id="mm-mode-blur" title="Frosted privacy blur">
+            <button class="mm-micro-btn ${settings.maskMode === "blur" ? "active" : ""}" id="mm-mode-blur" title="Frosted privacy blur (hover to peek)">
               <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"></path><line x1="2" y1="2" x2="22" y2="22"></line></svg>
               <span>Blur</span>
+            </button>
+            <button class="mm-micro-btn ${settings.maskMode === "lockdown" ? "active" : ""}" id="mm-mode-lockdown" title="Screen Share Blur: 100% blurred for you and viewers watching screen share (Hold Alt to peek)">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+              <span>Lockdown</span>
             </button>
             <button class="mm-micro-btn ${settings.maskMode === "scramble" ? "active" : ""}" id="mm-mode-scramble" title="Deterministic synthetic data scramble">
               <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 3 21 3 21 8"></polyline><line x1="4" y1="20" x2="21" y2="3"></line><polyline points="21 16 21 21 16 21"></polyline><line x1="15" y1="15" x2="21" y2="21"></line></svg>
@@ -1456,7 +1491,7 @@
           <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 3 21 3 21 8"></polyline><line x1="4" y1="20" x2="21" y2="3"></line><polyline points="21 16 21 21 16 21"></polyline><line x1="15" y1="15" x2="21" y2="21"></line></svg>
           <span>Client Demo</span>
         </button>
-        <button class="mm-preset-pill ${settings.maskMode === "blur" && !settings.spotlightMode ? "active" : ""}" id="mm-preset-meeting" title="Frosted blur on chats, notifications silenced">
+        <button class="mm-preset-pill ${(settings.maskMode === "blur" || settings.maskMode === "lockdown") && !settings.spotlightMode ? "active" : ""}" id="mm-preset-meeting" title="Screen Share Lockdown: 100% blurred for you & viewers, notifications silenced">
           <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
           <span>Team Meet</span>
         </button>
@@ -1665,11 +1700,19 @@
       renderInPagePanelContent();
     });
 
-    // 4. Mode Switch Handlers (Blur vs Scramble)
+    // 4. Mode Switch Handlers (Blur vs Lockdown vs Scramble)
     document.getElementById("mm-mode-blur")?.addEventListener("click", async (e) => {
       e.preventDefault();
       e.stopPropagation();
       settings.maskMode = "blur";
+      await syncAndSave();
+      renderInPagePanelContent();
+    });
+
+    document.getElementById("mm-mode-lockdown")?.addEventListener("click", async (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      settings.maskMode = "lockdown";
       await syncAndSave();
       renderInPagePanelContent();
     });
@@ -1712,7 +1755,7 @@
       e.preventDefault();
       e.stopPropagation();
       armInPageScope();
-      settings.maskMode = "blur";
+      settings.maskMode = "lockdown";
       settings.maskMessages = true;
       settings.maskAvatars = true;
       settings.silenceNotifications = true;
@@ -1868,7 +1911,9 @@
       "shield-armed-messages",
       "shield-armed-media",
       "shield-armed-avatars",
-      "shield-notifications-silenced"
+      "shield-notifications-silenced",
+      "shield-lockdown",
+      "shield-alt-held"
     );
 
     // 1. Text node restorations from Set
