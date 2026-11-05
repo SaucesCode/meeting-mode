@@ -35,11 +35,35 @@ This document contains all metadata, store copy, certification notes, and step-b
 
 ## 2. Store Descriptions
 
+### Search terms / Keywords (Max 21 terms, max 30 characters each):
+Enter each of these into the Search terms field in Edge Partner Center:
+1. meetingmode
+2. meeting mode
+3. meeting-mode
+4. screen share privacy
+5. screen shield
+6. privacy shield
+7. blur screen
+8. blur messages
+9. discord blur
+10. messenger blur
+11. slack blur
+12. presentation privacy
+13. hide sensitive data
+14. mask pii
+15. data cloaker
+16. demo mode
+17. google meet privacy
+18. teams screen share
+19. zoom screen share
+20. hide financials
+21. hide api keys
+
 ### Short Description (Max 100 chars):
 Zero-click privacy shield for screen sharing & demos. Masks financials, emails, API keys & chats.
 
-### Detailed Description (Formatted for Microsoft Edge):
-Present with total confidence. MeetingMode is a high-precision privacy shield designed for professionals, developers, and founders who share their screens on Google Meet, Microsoft Teams, Zoom, Slack Huddles, and Loom.
+### Detailed Description (Formatted for Microsoft Edge ASO):
+MeetingMode (Meeting Mode) is a high-precision, zero-click presentation privacy shield designed for professionals, founders, and developers who share their screens on Google Meet, Microsoft Teams, Zoom, Slack Huddles, and Loom.
 
 Stop worrying about accidental data leaks. MeetingMode automatically identifies and cloaks sensitive personal identifiable information (PII), confidential client balances, API tokens, and private chat messages in real time with zero layout shift.
 
