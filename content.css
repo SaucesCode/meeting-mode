@@ -809,20 +809,39 @@ html.shield-lockdown:not(.shield-alt-held).shield-armed-avatars .c-avatar:hover 
 
 .mm-master-sub-controls {
   display: flex !important;
-  align-items: center !important;
-  justify-content: space-between !important;
-  gap: 6px !important;
+  flex-direction: column !important;
+  gap: 5px !important;
   padding-top: 6px !important;
   border-top: 1px solid rgba(255, 255, 255, 0.06) !important;
+  width: 100% !important;
+}
+
+.mm-sub-control-row {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  width: 100% !important;
+}
+
+.mm-sub-control-label {
+  width: 36px !important;
+  flex-shrink: 0 !important;
+  font-size: 9px !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  color: #64748b !important;
 }
 
 .mm-micro-segment {
+  flex: 1 !important;
   display: flex !important;
   background: #0d0f14 !important;
   border: 1px solid rgba(255, 255, 255, 0.08) !important;
   border-radius: 6px !important;
   padding: 2px !important;
   gap: 2px !important;
+  min-width: 0 !important;
 }
 
 .mm-micro-segment-scope {
@@ -830,7 +849,7 @@ html.shield-lockdown:not(.shield-alt-held).shield-armed-avatars .c-avatar:hover 
 }
 
 .mm-micro-segment-mode {
-  flex: 1.25 !important;
+  flex: 1 !important;
 }
 
 .mm-micro-btn {
@@ -839,7 +858,7 @@ html.shield-lockdown:not(.shield-alt-held).shield-armed-avatars .c-avatar:hover 
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
-  gap: 3px !important;
+  gap: 4px !important;
   height: 20px !important;
   padding: 0 4px !important;
   border-radius: 4px !important;
@@ -849,6 +868,7 @@ html.shield-lockdown:not(.shield-alt-held).shield-armed-avatars .c-avatar:hover 
   color: #94a3b8 !important;
   cursor: pointer !important;
   white-space: nowrap !important;
+  min-width: 0 !important;
   transition: all 0.12s ease !important;
   box-sizing: border-box !important;
 }

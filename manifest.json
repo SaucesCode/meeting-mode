@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "MeetingMode - Screen Share Privacy Shield",
   "short_name": "MeetingMode",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Zero-click privacy shield for screen sharing & demos. Masks financials, emails, API keys & chats.",
   "permissions": [
     "storage",

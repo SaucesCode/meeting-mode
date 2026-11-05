@@ -71,7 +71,7 @@
 }
 
 html {
-  width: 356px;
+  width: 364px;
   margin: 0;
   padding: 0;
   overflow: hidden;
@@ -86,7 +86,7 @@ html::-webkit-scrollbar {
 }
 
 body {
-  width: 356px;
+  width: 364px;
   margin: 0;
   padding: 0;
   background-color: var(--bg-canvas);
@@ -393,23 +393,42 @@ body::-webkit-scrollbar {
   transform: translateX(14px);
 }
 
-/* Integrated Micro-Segments (Scope & Mode in Card Footer) */
+/* Integrated Micro-Segments (Scope & Mode in Card Footer - 2-Row Stacked Layout) */
 .master-sub-controls {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 6px;
-  padding-top: 6px;
+  flex-direction: column;
+  gap: 5px;
+  padding-top: 7px;
   border-top: 1px solid var(--border-hairline);
+  width: 100%;
+}
+
+.sub-control-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+
+.sub-control-label {
+  width: 36px;
+  flex-shrink: 0;
+  font-size: 9.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
 }
 
 .micro-segment {
+  flex: 1;
   display: flex;
   background: var(--bg-subtle);
   border: 1px solid var(--border-hairline);
   border-radius: 6px;
   padding: 2px;
   gap: 2px;
+  min-width: 0;
 }
 
 .micro-segment-scope {
@@ -417,7 +436,7 @@ body::-webkit-scrollbar {
 }
 
 .micro-segment-mode {
-  flex: 1.25;
+  flex: 1;
 }
 
 .micro-segment-btn {
@@ -426,16 +445,17 @@ body::-webkit-scrollbar {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 3px;
-  height: 20px;
+  gap: 4px;
+  height: 21px;
   padding: 0 4px;
   border-radius: 4px;
   font-family: inherit;
-  font-size: 9.5px;
+  font-size: 10px;
   font-weight: 600;
   color: var(--text-muted);
   cursor: pointer;
   white-space: nowrap;
+  min-width: 0;
   transition: all 0.12s ease;
 }
 
@@ -446,7 +466,7 @@ body::-webkit-scrollbar {
 .micro-segment-btn.active {
   background: var(--bg-surface);
   color: var(--accent-emerald);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
 }
 
 /* ==========================================================================

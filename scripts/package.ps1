@@ -5,10 +5,14 @@ $ErrorActionPreference = "Stop"
 $ProgressPreference = "SilentlyContinue"
 
 $rootDir = Split-Path $PSScriptRoot -Parent
-$distDir = Join-Path $rootDir "dist"
-$zipPath = Join-Path $rootDir "meeting-mode-v1.0.0.zip"
+$manifestPath = Join-Path $rootDir "manifest.json"
+$manifestJson = Get-Content $manifestPath -Raw | ConvertFrom-Json
+$version = $manifestJson.version
 
-Write-Host "Creating clean release build directory..."
+$distDir = Join-Path $rootDir "dist"
+$zipPath = Join-Path $rootDir "meeting-mode-v$version.zip"
+
+Write-Host "Creating clean release build directory for v$version..."
 if (Test-Path $distDir) {
     Remove-Item -Recurse -Force $distDir
 }
@@ -54,4 +58,4 @@ Remove-Item -Recurse -Force $distDir
 
 $zipItem = Get-Item $zipPath
 $sizeKB = [math]::Round($zipItem.Length / 1KB, 2)
-Write-Host "Package created successfully: meeting-mode-v1.0.0.zip ($sizeKB KB)"
+Write-Host "Package created successfully: meeting-mode-v$version.zip ($sizeKB KB)"
