@@ -8,6 +8,8 @@
 
 Official Store Listing: **[Microsoft Edge Add-ons Store](https://microsoftedge.microsoft.com/addons/detail/meetingmode-screen-shar/pnfahfnonohbgnbgdalegoicoldkbkno)**
 
+![MeetingMode Preview](assets/screenshot_demo.png)
+
 ---
 
 ## Why MeetingMode?
@@ -97,6 +99,27 @@ Install MeetingMode directly from the official store in one click:
 * **100% Client-Side Execution:** MeetingMode runs entirely inside your local browser sandbox.
 * **Zero Data Collection:** No tracking, no telemetry, no cookies, no analytics, no external servers, and no network requests.
 * **Open Source:** Fully transparent codebase verified on GitHub.
+
+---
+
+## Project Structure
+
+```text
+meeting-mode/
+├── manifest.json              # Extension manifest (MV3)
+├── background.js              # Service worker (tab/window scope & hotkeys)
+├── content.js                 # DOM scanner, heuristic engine & tactical HUD
+├── content.css                # CSP-exempt zero-delay masking stylesheet
+├── popup.html / popup.js      # Toolbar popup interface
+├── options.html / options.js  # Settings & welcome onboarding
+├── demo.html                  # Interactive playground & testbed
+├── PRIVACY.md                 # Privacy policy
+├── README.md                  # Documentation & quick start
+├── assets/                    # Store screenshots & media previews
+├── docs/                      # Store listings & submission guides
+├── icons/                     # Extension branding icons
+└── scripts/                   # Packaging & build automation
+```
 
 ---
 

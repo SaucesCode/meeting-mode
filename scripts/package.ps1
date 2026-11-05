@@ -1,11 +1,12 @@
-# MeetingMode Chrome Web Store Packaging Script
-# Generates a pristine release zip ready for Google Developer Console upload.
+# MeetingMode Chrome & Edge Web Store Packaging Script
+# Generates a pristine release zip ready for Developer Console upload.
 
 $ErrorActionPreference = "Stop"
 $ProgressPreference = "SilentlyContinue"
 
-$distDir = Join-Path $PSScriptRoot "dist"
-$zipPath = Join-Path $PSScriptRoot "meeting-mode-v1.0.0.zip"
+$rootDir = Split-Path $PSScriptRoot -Parent
+$distDir = Join-Path $rootDir "dist"
+$zipPath = Join-Path $rootDir "meeting-mode-v1.0.0.zip"
 
 Write-Host "Creating clean release build directory..."
 if (Test-Path $distDir) {
@@ -28,14 +29,14 @@ $includeFiles = @(
 )
 
 foreach ($file in $includeFiles) {
-    $src = Join-Path $PSScriptRoot $file
+    $src = Join-Path $rootDir $file
     if (Test-Path $src) {
         Copy-Item -Path $src -Destination $distDir -Force
     }
 }
 
 # Copy icons directory
-$iconsSrc = Join-Path $PSScriptRoot "icons"
+$iconsSrc = Join-Path $rootDir "icons"
 $iconsDst = Join-Path $distDir "icons"
 if (Test-Path $iconsSrc) {
     Copy-Item -Recurse -Path $iconsSrc -Destination $iconsDst -Force

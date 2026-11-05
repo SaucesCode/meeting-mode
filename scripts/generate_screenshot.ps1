@@ -272,7 +272,8 @@ $tagBrush = New-Object System.Drawing.SolidBrush ([System.Drawing.ColorTranslato
 $g.DrawString("MeetingMode - Real-time Presentation Privacy Shield", $tagFont, $tagBrush, ($width / 2 - 170), ($height - 40))
 
 # Save output PNG
-$outputPath = Join-Path $PSScriptRoot "screenshot1.png"
+$rootDir = Split-Path $PSScriptRoot -Parent
+$outputPath = Join-Path $rootDir "assets\screenshot1.png"
 $bmp.Save($outputPath, [System.Drawing.Imaging.ImageFormat]::Png)
 
 $bmp.Dispose()
