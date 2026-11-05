@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" class="shield-armed-messages shield-armed-media mm-lockdown">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>MeetingMode - Screen Share Privacy Shield</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Apex Cloud - Enterprise Analytics & Live Demo</title>
   <style>
     * {
       box-sizing: border-box;
@@ -13,234 +14,154 @@
     }
 
     body {
-      background: #090a0f;
+      background: #090b10;
       color: #f1f5f9;
-      width: 1280px;
-      height: 800px;
-      overflow: hidden;
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
+      padding-bottom: 60px;
     }
 
-    /* Top OS Window Titlebar */
-    .window-titlebar {
-      height: 42px;
-      background: #0d1017;
-      border-bottom: 1px solid #1a202c;
+    /* Top Playground Guide Banner */
+    .playground-banner {
+      background: linear-gradient(90deg, #111827 0%, #064e3b 50%, #111827 100%);
+      border-bottom: 1px solid #10b98155;
+      padding: 12px 24px;
       display: flex;
-      align-items: center;
-      padding: 0 16px;
-      gap: 16px;
-      flex-shrink: 0;
-    }
-
-    .window-dots {
-      display: flex;
-      gap: 7px;
-    }
-
-    .window-dot {
-      width: 11px;
-      height: 11px;
-      border-radius: 50%;
-    }
-
-    .dot-red { background: #ef4444; }
-    .dot-yellow { background: #f59e0b; }
-    .dot-green { background: #10b981; }
-
-    .browser-tab {
-      background: #141824;
-      border: 1px solid #222a3d;
-      border-bottom: none;
-      border-radius: 6px 6px 0 0;
-      padding: 6px 14px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 11.5px;
-      color: #94a3b8;
-      font-weight: 500;
-    }
-
-    .browser-tab.active {
-      color: #f8fafc;
-      background: #181f30;
-      border-color: #2e384d;
-    }
-
-    .tab-icon {
-      width: 13px;
-      height: 13px;
-      fill: #10b981;
-    }
-
-    .address-bar {
-      flex: 1;
-      height: 27px;
-      background: #111520;
-      border: 1px solid #1e2638;
-      border-radius: 5px;
-      display: flex;
-      align-items: center;
-      padding: 0 12px;
-      gap: 8px;
-      font-size: 11.5px;
-      color: #64748b;
-    }
-
-    .address-lock {
-      width: 11px;
-      height: 11px;
-      fill: #10b981;
-    }
-
-    .address-text {
-      color: #94a3b8;
-    }
-
-    .address-text span {
-      color: #38bdf8;
-      font-weight: 500;
-    }
-
-    .toolbar-actions {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    /* Meeting Mode Extension Badge in Toolbar */
-    .extension-badge {
-      display: flex;
-      align-items: center;
-      gap: 7px;
-      background: rgba(16, 185, 129, 0.12);
-      border: 1px solid rgba(16, 185, 129, 0.4);
-      border-radius: 5px;
-      padding: 4px 10px;
-      font-size: 11px;
-      font-weight: 700;
-      color: #34d399;
-      letter-spacing: 0.3px;
-    }
-
-    .extension-badge-pulse {
-      width: 7px;
-      height: 7px;
-      background: #10b981;
-      border-radius: 50%;
-      box-shadow: 0 0 8px #10b981;
-    }
-
-    /* Live Screen Share Top Banner */
-    .screen-share-banner {
-      height: 38px;
-      background: linear-gradient(90deg, #101626 0%, #0c231a 50%, #101626 100%);
-      border-bottom: 1px solid rgba(16, 185, 129, 0.25);
-      display: flex;
-      align-items: center;
       justify-content: space-between;
-      padding: 0 24px;
-      font-size: 12px;
-      flex-shrink: 0;
+      align-items: center;
+      font-size: 13px;
     }
 
-    .banner-left {
-      display: flex;
-      align-items: center;
-      gap: 10px;
+    .banner-text {
       color: #e2e8f0;
       font-weight: 500;
     }
 
-    .recording-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: #ef4444;
-      box-shadow: 0 0 10px #ef4444;
+    .banner-text strong {
+      color: #34d399;
     }
 
-    .banner-tag {
-      background: #182234;
-      padding: 3px 8px;
-      border-radius: 4px;
-      font-size: 10.5px;
-      color: #38bdf8;
-      border: 1px solid #283548;
-      font-weight: 500;
-    }
-
-    .banner-right {
+    .banner-shortcuts {
       display: flex;
-      align-items: center;
-      gap: 14px;
-      color: #94a3b8;
+      gap: 12px;
       font-size: 11.5px;
     }
 
-    .status-pill-safe {
-      background: #064e3b;
-      border: 1px solid #059669;
+    .kbd-chip {
+      background: #062f25;
+      border: 1px solid #10b981;
       color: #a7f3d0;
-      padding: 3px 9px;
+      padding: 3px 8px;
       border-radius: 4px;
+      font-family: monospace;
       font-weight: 700;
-      font-size: 10.5px;
-      letter-spacing: 0.5px;
     }
 
-    /* Main Viewport Grid */
-    .main-viewport {
-      flex: 1;
-      display: grid;
-      grid-template-columns: 1fr 400px;
-      gap: 20px;
-      padding: 20px 24px;
-      background: radial-gradient(circle at 75% 20%, #0d1927 0%, #080a0f 65%);
-      overflow: hidden;
-    }
-
-    /* Left Dashboard Area */
-    .dashboard-panel {
+    /* Main Container */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px;
+      width: 100%;
       display: flex;
       flex-direction: column;
+      gap: 24px;
+    }
+
+    /* Header Nav */
+    .app-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #111520;
+      border: 1px solid #1e2638;
+      border-radius: 10px;
+      padding: 16px 20px;
+    }
+
+    .app-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-logo {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: #10b981;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      color: #022c22;
+      font-size: 16px;
+    }
+
+    .brand-name {
+      font-size: 17px;
+      font-weight: 700;
+      color: #f8fafc;
+    }
+
+    .brand-badge {
+      font-size: 11px;
+      color: #38bdf8;
+      background: #0369a122;
+      border: 1px solid #0284c744;
+      padding: 2px 7px;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+
+    .header-user {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 12.5px;
+      color: #94a3b8;
+    }
+
+    .user-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: #334155;
+      border: 1px solid #475569;
+    }
+
+    /* Section 1: KPI Metric Cards (Raw Financials) */
+    .section-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #e2e8f0;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .section-desc {
+      font-size: 12px;
+      color: #64748b;
+      font-weight: 400;
+    }
+
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
       gap: 16px;
     }
 
-    .dash-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-    }
-
-    .dash-title {
-      font-size: 21px;
-      font-weight: 700;
-      color: #f8fafc;
-      letter-spacing: -0.3px;
-    }
-
-    .dash-subtitle {
-      font-size: 12px;
-      color: #64748b;
-      margin-top: 3px;
-    }
-
-    /* 3 Metric Cards */
-    .metrics-row {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
-    }
-
     .metric-card {
-      background: #111522;
-      border: 1px solid #1f2738;
+      background: #121624;
+      border: 1px solid #1f273b;
       border-radius: 8px;
-      padding: 14px 16px;
-      position: relative;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
     }
 
     .metric-label {
@@ -249,99 +170,72 @@
       text-transform: uppercase;
       letter-spacing: 0.5px;
       color: #818cf8;
-      margin-bottom: 8px;
     }
 
-    .metric-value-box {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .metric-unmasked {
+    .metric-val {
       font-size: 24px;
       font-weight: 700;
-      color: #f1f5f9;
+      color: #f8fafc;
     }
 
-    /* Cloaked Blur Element */
-    .cloaked-blur-box {
-      background: rgba(16, 185, 129, 0.08);
-      border: 1px dashed rgba(16, 185, 129, 0.35);
-      border-radius: 6px;
-      padding: 3px 8px;
-      display: inline-flex;
-      align-items: center;
+    .metric-sub {
+      font-size: 11px;
+      color: #10b981;
+      font-weight: 500;
     }
 
-    .cloaked-blur-text {
-      filter: blur(7.5px);
-      user-select: none;
-      color: #cbd5e1;
-      font-size: 20px;
-      font-weight: 700;
-      letter-spacing: -0.5px;
+    /* Two Column Layout */
+    .content-layout {
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 20px;
     }
 
-    .cloak-badge {
-      display: inline-block;
-      font-size: 9.5px;
-      font-weight: 700;
-      color: #34d399;
-      background: rgba(16, 185, 129, 0.15);
-      border: 1px solid rgba(16, 185, 129, 0.35);
-      border-radius: 4px;
-      padding: 2px 6px;
-      margin-top: 6px;
-      letter-spacing: 0.4px;
-    }
-
-    /* Table Container */
-    .table-container {
-      background: #111522;
-      border: 1px solid #1f2738;
+    /* Table Component */
+    .card-panel {
+      background: #121624;
+      border: 1px solid #1f273b;
       border-radius: 8px;
       overflow: hidden;
-      flex: 1;
       display: flex;
       flex-direction: column;
     }
 
-    .table-titlebar {
-      padding: 11px 16px;
+    .panel-header {
+      padding: 14px 18px;
       border-bottom: 1px solid #1c2333;
+      background: #141928;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background: #131826;
     }
 
-    .table-title {
-      font-size: 13px;
+    .panel-title {
+      font-size: 13.5px;
       font-weight: 600;
-      color: #e2e8f0;
+      color: #f8fafc;
     }
 
     .data-table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 12px;
+      font-size: 12.5px;
     }
 
     .data-table th {
       text-align: left;
-      padding: 10px 14px;
-      font-size: 10px;
+      padding: 11px 16px;
+      font-size: 10.5px;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.5px;
       color: #64748b;
-      border-bottom: 1px solid #1c2333;
       background: #0f131f;
+      border-bottom: 1px solid #1c2333;
     }
 
     .data-table td {
-      padding: 11px 14px;
+      padding: 12px 16px;
       border-bottom: 1px solid #181f30;
       color: #cbd5e1;
     }
@@ -350,464 +244,253 @@
       border-bottom: none;
     }
 
-    .company-name {
+    .org-cell {
       font-weight: 600;
       color: #f8fafc;
     }
 
-    .email-cloaked {
-      filter: blur(5.5px);
-      user-select: none;
-      display: inline-block;
-      color: #60a5fa;
-      background: rgba(56, 189, 248, 0.12);
-      border: 1px dashed rgba(56, 189, 248, 0.3);
-      padding: 1px 7px;
-      border-radius: 4px;
-      font-size: 11.5px;
+    .email-cell {
+      color: #38bdf8;
     }
 
-    .key-cloaked {
-      filter: blur(6px);
-      user-select: none;
-      display: inline-block;
+    .api-cell {
       font-family: monospace;
       font-size: 11px;
       color: #f43f5e;
-      background: rgba(244, 63, 94, 0.12);
-      border: 1px dashed rgba(244, 63, 94, 0.3);
-      padding: 1px 7px;
+      background: #231218;
+      padding: 3px 6px;
       border-radius: 4px;
+      border: 1px solid #ef444433;
     }
 
-    .balance-cloaked {
-      filter: blur(6px);
-      user-select: none;
-      display: inline-block;
+    .amount-cell {
       font-weight: 700;
       color: #34d399;
-      background: rgba(16, 185, 129, 0.12);
-      border: 1px dashed rgba(16, 185, 129, 0.3);
-      padding: 1px 7px;
-      border-radius: 4px;
-      font-size: 12px;
     }
 
-    /* Right Column: Chat Feed + MeetingMode HUD */
-    .side-column {
+    /* Right Column: Chat & Form Inputs */
+    .side-stack {
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 20px;
     }
 
-    /* Live Chat Window (Slack / Discord / Messenger) */
-    .chat-panel {
-      background: #111522;
-      border: 1px solid #20283a;
-      border-radius: 8px;
-      overflow: hidden;
+    /* Live Chat Stream Mockup */
+    .chat-messages {
+      padding: 14px 16px;
       display: flex;
       flex-direction: column;
+      gap: 12px;
+      max-height: 280px;
+      overflow-y: auto;
     }
 
-    .chat-header {
-      background: #141928;
-      border-bottom: 1px solid #1f2738;
-      padding: 9px 14px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 11.5px;
-    }
-
-    .chat-channel {
-      font-weight: 700;
-      color: #cbd5e1;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .chat-lockdown-indicator {
-      font-size: 9.5px;
-      font-weight: 700;
-      color: #ef4444;
-      background: rgba(239, 68, 68, 0.15);
-      border: 1px solid rgba(239, 68, 68, 0.35);
-      padding: 2px 6px;
-      border-radius: 4px;
-      letter-spacing: 0.3px;
-    }
-
-    .chat-body {
-      padding: 12px 14px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .chat-message-row {
+    .message-row {
       display: flex;
       gap: 10px;
       align-items: flex-start;
     }
 
     .chat-avatar {
-      width: 28px;
-      height: 28px;
+      width: 30px;
+      height: 30px;
       border-radius: 50%;
       background: #252e42;
-      filter: blur(4.5px);
-      flex-shrink: 0;
       border: 1px solid #334155;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 700;
+      color: #94a3b8;
     }
 
-    .chat-content {
+    .message-content-wrap {
       flex: 1;
     }
 
-    .chat-author {
+    .message-sender {
       font-size: 11px;
       font-weight: 600;
       color: #94a3b8;
       margin-bottom: 3px;
-      display: flex;
-      justify-content: space-between;
     }
 
-    .chat-time {
-      font-weight: 400;
-      color: #475569;
-      font-size: 10px;
-    }
-
-    .chat-bubble-blurred {
-      filter: blur(7.5px);
-      user-select: none;
-      background: #1a2234;
-      color: #e2e8f0;
-      padding: 7px 11px;
+    /* Native chat classes matched by MeetingMode's content.css */
+    .messageContent, .c-message__body, .bubble-content {
+      background: #192132;
+      border: 1px solid #242d42;
       border-radius: 6px;
+      padding: 8px 11px;
       font-size: 12px;
       line-height: 1.4;
-      border-left: 2px solid #ef4444;
+      color: #f1f5f9;
     }
 
-    .chat-attachment-blurred {
-      filter: blur(12px);
-      user-select: none;
-      background: #192336;
-      height: 48px;
+    .messageAttachment, .c-message_attachment {
+      background: #151b2a;
+      border: 1px dashed #334155;
       border-radius: 6px;
+      padding: 10px;
       margin-top: 6px;
-      border: 1px dashed #38bdf855;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 10.5px;
+      font-size: 11px;
       color: #94a3b8;
-      font-weight: 600;
-    }
-
-    .lockdown-peek-tip {
-      font-size: 10.5px;
-      color: #64748b;
-      margin-top: 2px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .lockdown-peek-kbd {
-      color: #38bdf8;
-      font-weight: 600;
-    }
-
-    /* MeetingMode In-Page Tactical HUD */
-    .hud-card {
-      background: #0d1017;
-      border: 1.5px solid #1f283d;
-      border-radius: 10px;
-      padding: 16px;
-      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.65);
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .hud-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .hud-title-group {
       display: flex;
       align-items: center;
       gap: 8px;
     }
 
-    .hud-brand {
-      font-size: 13.5px;
-      font-weight: 700;
-      color: #f8fafc;
-      letter-spacing: -0.2px;
+    /* Form Fields for Ghost Input Cloaking */
+    .form-grid {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
     }
 
-    .hud-version {
-      font-size: 10px;
-      font-weight: 700;
-      color: #10b981;
-      background: rgba(16, 185, 129, 0.12);
-      border: 1px solid rgba(16, 185, 129, 0.35);
-      padding: 2px 6px;
-      border-radius: 4px;
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
     }
 
-    .hud-presets {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 6px;
-    }
-
-    .preset-pill {
-      background: #131824;
-      border: 1px solid #20293d;
-      border-radius: 5px;
-      padding: 6px;
-      text-align: center;
-      font-size: 10.5px;
+    .form-label {
+      font-size: 11px;
       font-weight: 600;
       color: #94a3b8;
-    }
-
-    .preset-pill.active {
-      background: #064e3b;
-      border-color: #10b981;
-      color: #a7f3d0;
-      font-weight: 700;
-    }
-
-    .hud-master-shield {
-      background: rgba(16, 185, 129, 0.12);
-      border: 1.5px solid #10b981;
-      border-radius: 6px;
-      padding: 9px 12px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .shield-state-text {
-      font-size: 12.5px;
-      font-weight: 700;
-      color: #34d399;
-      display: flex;
-      align-items: center;
-      gap: 7px;
-    }
-
-    .shield-state-badge {
-      background: #10b981;
-      color: #022c22;
-      font-size: 10px;
-      font-weight: 800;
-      padding: 2px 7px;
-      border-radius: 3px;
+      text-transform: uppercase;
       letter-spacing: 0.5px;
     }
 
-    .hud-scope-row {
-      display: flex;
-      justify-content: space-between;
-      background: #121724;
-      border: 1px solid #1b2334;
+    .form-input {
+      background: #0f131e;
+      border: 1px solid #222b3e;
       border-radius: 5px;
-      padding: 6px 10px;
-      font-size: 9.5px;
-      font-weight: 700;
-    }
-
-    .scope-label { color: #64748b; }
-    .scope-val { color: #cbd5e1; }
-    .mode-val { color: #38bdf8; }
-
-    /* Rules Checklist */
-    .hud-rules-list {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    .rule-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: #111622;
-      border-radius: 4px;
-      padding: 6px 9px;
-      font-size: 11px;
-      color: #cbd5e1;
-    }
-
-    .rule-check {
-      width: 14px;
-      height: 14px;
-      border-radius: 3px;
-      background: #10b981;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .rule-check svg {
-      width: 10px;
-      height: 10px;
-      stroke: #022c22;
-      stroke-width: 3;
-      fill: none;
-    }
-
-    /* Emergency Panic Action Bar */
-    .hud-panic-strip {
-      background: rgba(239, 68, 68, 0.12);
-      border: 1px solid rgba(239, 68, 68, 0.45);
-      border-radius: 6px;
       padding: 8px 12px;
+      color: #f8fafc;
+      font-size: 12.5px;
+      outline: none;
+    }
+
+    .form-input:focus {
+      border-color: #10b981;
+    }
+
+    /* Interactive Helper Buttons */
+    .test-actions-bar {
+      background: #121624;
+      border: 1px solid #1f273b;
+      border-radius: 8px;
+      padding: 14px 18px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 11px;
     }
 
-    .panic-label {
-      color: #f87171;
-      font-weight: 700;
-    }
-
-    .panic-kbd {
-      font-family: monospace;
-      background: #2b1419;
-      color: #fca5a5;
-      padding: 2px 7px;
-      border-radius: 3px;
-      font-size: 10.5px;
-      border: 1px solid #ef444466;
-    }
-
-    /* Bottom Branding Tagline */
-    .bottom-tagline {
-      height: 34px;
-      background: #090c12;
-      border-top: 1px solid #161c28;
+    .btn-group {
       display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 24px;
-      font-size: 11.5px;
-      color: #64748b;
-      flex-shrink: 0;
+      gap: 10px;
     }
 
-    .tagline-highlight {
+    .action-btn {
+      background: #1b2334;
+      border: 1px solid #2d3850;
+      color: #cbd5e1;
+      padding: 6px 12px;
+      border-radius: 5px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .action-btn:hover {
+      background: #252f44;
+      border-color: #10b981;
+      color: #f8fafc;
+    }
+
+    .toast-indicator {
+      font-size: 12px;
       color: #10b981;
-      font-weight: 700;
+      font-weight: 600;
+      display: none;
     }
   </style>
 </head>
 <body>
 
-  <!-- 1. OS Window Titlebar & Browser Mockup -->
-  <div class="window-titlebar">
-    <div class="window-dots">
-      <div class="window-dot dot-red"></div>
-      <div class="window-dot dot-yellow"></div>
-      <div class="window-dot dot-green"></div>
+  <!-- Top Guide Banner -->
+  <div class="playground-banner">
+    <div class="banner-text">
+      <strong>MeetingMode Interactive Testbed:</strong> All data below is raw un-cloaked text. Turn on the <strong>MeetingMode extension</strong> to watch it automatically blur, lock down, or scramble.
     </div>
-
-    <div class="browser-tab active">
-      <svg class="tab-icon" viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
-      Apex Cloud - Enterprise Financials
-    </div>
-
-    <div class="address-bar">
-      <svg class="address-lock" viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
-      <div class="address-text">https://<span>app.apexcloud.io</span>/analytics/revenue/q4-enterprise</div>
-    </div>
-
-    <div class="toolbar-actions">
-      <div class="extension-badge">
-        <div class="extension-badge-pulse"></div>
-        MEETINGMODE: SAFE
-      </div>
+    <div class="banner-shortcuts">
+      <div>Toggle: <span class="kbd-chip">Alt + Shift + M</span></div>
+      <div>Panic: <span class="kbd-chip">Alt + Shift + B</span></div>
+      <div>Spotlight: <span class="kbd-chip">Alt + Shift + P</span></div>
     </div>
   </div>
 
-  <!-- 2. Live Screen Share Indicator Banner -->
-  <div class="screen-share-banner">
-    <div class="banner-left">
-      <div class="recording-dot"></div>
-      <span>Screen Share Active: Google Meet</span>
-      <div class="banner-tag">Window 1 (1080p)</div>
-      <div class="banner-tag">14 Participants</div>
-    </div>
-    <div class="banner-right">
-      <span>Lockdown Mode: Presenter Peeking Armed</span>
-      <div class="status-pill-safe">ZERO LEAKS DETECTED</div>
-    </div>
-  </div>
+  <div class="container">
 
-  <!-- 3. Main Viewport Grid -->
-  <div class="main-viewport">
-    
-    <!-- Left Column: Enterprise Dashboard -->
-    <div class="dashboard-panel">
-      
-      <div class="dash-header">
+    <!-- Header Nav -->
+    <div class="app-header">
+      <div class="app-brand">
+        <div class="brand-logo">A</div>
         <div>
-          <div class="dash-title">Apex Cloud - Executive Revenue & MRR</div>
-          <div class="dash-subtitle">Enterprise Client Portfolios & Live Transaction Stream</div>
+          <div class="brand-name">Apex Cloud Analytics</div>
+        </div>
+        <div class="brand-badge">ENTERPRISE PRODUCTION</div>
+      </div>
+      <div class="header-user">
+        <div class="user-avatar"></div>
+        <div>
+          <div style="font-weight: 600; color: #f8fafc;">Alex Mercer (Founder & CEO)</div>
+          <div style="font-size: 11px;">alex.mercer@apexcloud.io</div>
         </div>
       </div>
+    </div>
 
-      <!-- 3 KPI Cards -->
-      <div class="metrics-row">
-        
+    <!-- Section 1: Raw Financials (ARR, MRR, Treasury) -->
+    <div>
+      <div class="section-title">
+        <span>Executive Financial Metrics</span>
+        <span class="section-desc">Tests financial regex: currency symbols, balances, and revenue totals</span>
+      </div>
+      <div class="metrics-grid">
         <div class="metric-card">
           <div class="metric-label">Annual Recurring Revenue (ARR)</div>
-          <div class="metric-value-box">
-            <div class="cloaked-blur-box">
-              <span class="cloaked-blur-text">$2,840,000.00</span>
-            </div>
-          </div>
-          <div class="cloak-badge">AUTO-CLOAKED</div>
+          <div class="metric-val">$3,842,500.00</div>
+          <div class="metric-sub">+38.2% vs last year</div>
         </div>
-
         <div class="metric-card">
-          <div class="metric-label">Net Monthly Revenue (MRR)</div>
-          <div class="metric-value-box">
-            <div class="cloaked-blur-box">
-              <span class="cloaked-blur-text">$236,750.00</span>
-            </div>
-          </div>
-          <div class="cloak-badge">AUTO-CLOAKED</div>
+          <div class="metric-label">Monthly Recurring Revenue (MRR)</div>
+          <div class="metric-val">$320,400.00</div>
+          <div class="metric-sub">+$24,100.00 this month</div>
         </div>
-
         <div class="metric-card">
-          <div class="metric-label">Active Workspaces</div>
-          <div class="metric-value-box">
-            <span class="metric-unmasked">4,812</span>
-          </div>
-          <div style="font-size: 10px; color: #64748b; margin-top: 6px; font-weight: 600;">UNMASKED (NON-SENSITIVE)</div>
+          <div class="metric-label">Treasury Bank Balance</div>
+          <div class="metric-val">$14,890,250.00</div>
+          <div class="metric-sub">Silicon Valley Bank (SVB)</div>
         </div>
-
+        <div class="metric-card">
+          <div class="metric-label">Average Contract Value (ACV)</div>
+          <div class="metric-val">$48,200.00</div>
+          <div class="metric-sub">Enterprise tier accounts</div>
+        </div>
       </div>
+    </div>
 
-      <!-- Transactions Table with Masked PII -->
-      <div class="table-container">
-        <div class="table-titlebar">
-          <div class="table-title">Recent Enterprise Billing & Provisioning</div>
-          <div style="font-size: 11px; color: #10b981; font-weight: 700;">PII & SECRETS SHIELDED</div>
+    <!-- Section 2: Split Table + Chat/Forms -->
+    <div class="content-layout">
+
+      <!-- Left Column: Customer Accounts Table -->
+      <div class="card-panel">
+        <div class="panel-header">
+          <div class="panel-title">Active Enterprise Contracts & API Tokens</div>
+          <div style="font-size: 11px; color: #64748b;">5 Enterprise Clients</div>
         </div>
 
         <table class="data-table">
@@ -815,157 +498,159 @@
             <tr>
               <th>Client / Org</th>
               <th>Billing Contact</th>
-              <th>Tier</th>
-              <th>Secret API Key</th>
-              <th>Volume</th>
+              <th>Secret API Token</th>
+              <th>Contract Value</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td class="company-name">Stripe Platform Inc</td>
-              <td><span class="email-cloaked">billing.ops@stripe.com</span></td>
-              <td><span style="color:#38bdf8; font-weight:600;">Enterprise L4</span></td>
-              <td><span class="key-cloaked">sk_live_948f2190bc</span></td>
-              <td><span class="balance-cloaked">$84,000.00</span></td>
+              <td class="org-cell">Stripe Platform Inc</td>
+              <td class="email-cell">patrick.collison@stripe.com</td>
+              <td><span class="api-cell">bearer stripe_prod_sec_88291039481920384910</span></td>
+              <td class="amount-cell">$185,000.00</td>
             </tr>
             <tr>
-              <td class="company-name">Vercel Infrastructure</td>
-              <td><span class="email-cloaked">admin@vercel.internal</span></td>
-              <td><span style="color:#38bdf8; font-weight:600;">Enterprise L3</span></td>
-              <td><span class="key-cloaked">sk_live_3820fa91de</span></td>
-              <td><span class="balance-cloaked">$42,500.00</span></td>
+              <td class="org-cell">Vercel Cloud Ops</td>
+              <td class="email-cell">guillermo.rauch@vercel.com</td>
+              <td><span class="api-cell">bearer vercel_prod_sec_3820fa91de8829103948</span></td>
+              <td class="amount-cell">$94,500.00</td>
             </tr>
             <tr>
-              <td class="company-name">OpenAI Global Research</td>
-              <td><span class="email-cloaked">security-lead@openai.com</span></td>
-              <td><span style="color:#a855f7; font-weight:600;">Dedicated GPU</span></td>
-              <td><span class="key-cloaked">sk_live_7718de50ac</span></td>
-              <td><span class="balance-cloaked">$128,400.00</span></td>
+              <td class="org-cell">OpenAI Research</td>
+              <td class="email-cell">sam.altman@openai.com</td>
+              <td><span class="api-cell">bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9</span></td>
+              <td class="amount-cell">$420,000.00</td>
             </tr>
             <tr>
-              <td class="company-name">Figma Systems Core</td>
-              <td><span class="email-cloaked">accounts@figma.com</span></td>
-              <td><span style="color:#38bdf8; font-weight:600;">Enterprise L2</span></td>
-              <td><span class="key-cloaked">sk_live_1209bf44ea</span></td>
-              <td><span class="balance-cloaked">$31,200.00</span></td>
+              <td class="org-cell">GitHub Enterprise</td>
+              <td class="email-cell">security.ops@github.com</td>
+              <td><span class="api-cell">bearer github_pat_8829103948192038491029384</span></td>
+              <td class="amount-cell">$78,000.00</td>
+            </tr>
+            <tr>
+              <td class="org-cell">Sequoia Capital</td>
+              <td class="email-cell">partner.deal@sequoiacap.com</td>
+              <td><span class="api-cell">bearer sequoia_vault_88392189401823901840</span></td>
+              <td class="amount-cell">$1,250,000.00</td>
             </tr>
           </tbody>
         </table>
       </div>
 
-    </div>
+      <!-- Right Column: Live Chat & Ghost Form Inputs -->
+      <div class="side-stack">
 
-    <!-- Right Column: Docked Team Chat & In-Page HUD -->
-    <div class="side-column">
-      
-      <!-- Live Slack/Discord Chat Window -->
-      <div class="chat-panel">
-        <div class="chat-header">
-          <div class="chat-channel">
-            <span style="color: #64748b;">#</span>
-            <span>founders-confidential (Slack)</span>
+        <!-- Live Chat Panel (Slack / Discord selectors) -->
+        <div class="card-panel">
+          <div class="panel-header">
+            <div class="panel-title">#founders-deal-room (Slack & Discord)</div>
+            <div style="font-size: 10px; color: #10b981; font-weight: 700;">LIVE FEED</div>
           </div>
-          <div class="chat-lockdown-indicator">LOCKDOWN ON</div>
-        </div>
-        <div class="chat-body">
-          
-          <div class="chat-message-row">
-            <div class="chat-avatar"></div>
-            <div class="chat-content">
-              <div class="chat-author">
-                <span>VP Finance</span>
-                <span class="chat-time">10:42 AM</span>
-              </div>
-              <div class="chat-bubble-blurred">
-                Wire cleared for $2.4M today. Attached signed acquisition contract for review.
-              </div>
-              <div class="chat-attachment-blurred">
-                CONFIDENTIAL_ACQUISITION_AGREEMENT.PDF
+
+          <div class="chat-messages" id="chatFeed">
+            
+            <div class="message-row">
+              <div class="chat-avatar">VP</div>
+              <div class="message-content-wrap">
+                <div class="message-sender">VP Finance • 10:38 AM</div>
+                <div class="messageContent">
+                  The $2.8M seed round wire just cleared into our account. Let us celebrate!
+                </div>
               </div>
             </div>
-          </div>
 
-          <div class="lockdown-peek-tip">
-            <span>Hover stays 100% blurred for viewers.</span>
-            <span class="lockdown-peek-kbd">Hold Alt to peek</span>
-          </div>
+            <div class="message-row">
+              <div class="chat-avatar">CTO</div>
+              <div class="message-content-wrap">
+                <div class="message-sender">Elena (CTO) • 10:41 AM</div>
+                <div class="c-message__body">
+                  Please email the cap table to partner.deal@sequoiacap.com before our 2 PM screen share.
+                </div>
+                <div class="messageAttachment">
+                  CONFIDENTIAL_SERIES_A_CAP_TABLE.PDF (1.4 MB)
+                </div>
+              </div>
+            </div>
 
-        </div>
-      </div>
+            <div class="message-row">
+              <div class="chat-avatar">OPS</div>
+              <div class="message-content-wrap">
+                <div class="message-sender">DevOps Lead • 10:44 AM</div>
+                <div class="bubble-content">
+                  Temporary master database password is: SuperAdmin2026!#
+                </div>
+              </div>
+            </div>
 
-      <!-- In-Page MeetingMode Tactical HUD Modal -->
-      <div class="hud-card">
-        
-        <div class="hud-top">
-          <div class="hud-title-group">
-            <div class="hud-brand">MeetingMode HUD</div>
-            <div class="hud-version">v1.0.0</div>
-          </div>
-          <div class="hud-version" style="color: #38bdf8; border-color: #0284c7; background: rgba(12, 74, 110, 0.25);">STORE APPROVED</div>
-        </div>
-
-        <div class="hud-presets">
-          <div class="preset-pill">Client Demo</div>
-          <div class="preset-pill active">Team Meet</div>
-          <div class="preset-pill">Loom Beam</div>
-        </div>
-
-        <div class="hud-master-shield">
-          <div class="shield-state-text">
-            <svg style="width: 15px; height: 15px; fill: #10b981;" viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
-            Shield Active (ARMED)
-          </div>
-          <div class="shield-state-badge">SAFE</div>
-        </div>
-
-        <div class="hud-scope-row">
-          <div><span class="scope-label">SCOPE:</span> <span class="scope-val">THIS WINDOW</span></div>
-          <div><span class="scope-label">MODE:</span> <span class="mode-val">LOCKDOWN (BLUR FOR ALL)</span></div>
-        </div>
-
-        <div class="hud-rules-list">
-          <div class="rule-item">
-            <span>Messenger, Discord & Chats</span>
-            <div class="rule-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
-          </div>
-          <div class="rule-item">
-            <span>Financials ($ & Balances)</span>
-            <div class="rule-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
-          </div>
-          <div class="rule-item">
-            <span>Customer & User Emails</span>
-            <div class="rule-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
-          </div>
-          <div class="rule-item">
-            <span>API Keys & Secrets</span>
-            <div class="rule-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
-          </div>
-          <div class="rule-item">
-            <span>Screen Share Lockdown</span>
-            <div class="rule-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
           </div>
         </div>
 
-        <div class="hud-panic-strip">
-          <div class="panic-label">Emergency Panic Curtain</div>
-          <div class="panic-kbd">Alt + Shift + B</div>
+        <!-- Ghost Form Inputs -->
+        <div class="card-panel">
+          <div class="panel-header">
+            <div class="panel-title">Pre-Filled Form & Secret Inputs</div>
+            <div style="font-size: 10.5px; color: #64748b;">Ghost Input Test</div>
+          </div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="form-label">Master Vault Password</label>
+              <input type="password" class="form-input" value="SuperSecretVaultKey99">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Executive Contact Phone</label>
+              <input type="text" class="form-input" value="+1 (555) 839-2019">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Corporate Tax ID / SSN</label>
+              <input type="text" class="form-input" value="984-22-1092">
+            </div>
+          </div>
         </div>
 
       </div>
 
     </div>
 
+    <!-- Section 3: Interactive Action Bar for Testing -->
+    <div class="test-actions-bar">
+      <div>
+        <div style="font-size: 13px; font-weight: 600; color: #f8fafc;">Interactive Feature Testers</div>
+        <div style="font-size: 11.5px; color: #64748b;">Click buttons below to test dynamic clipboard redaction and live DOM mutations</div>
+      </div>
+      <div class="btn-group">
+        <button class="action-btn" onclick="copySensitiveEmail()">Copy Stripe Email</button>
+        <button class="action-btn" onclick="addDynamicMessage()">Simulate Incoming Chat</button>
+        <span class="toast-indicator" id="toastNotice">Copied to clipboard!</span>
+      </div>
+    </div>
+
   </div>
 
-  <!-- 4. Bottom Branding Tagline -->
-  <div class="bottom-tagline">
-    <div>
-      <span class="tagline-highlight">MeetingMode</span> - Zero-Click Presentation Privacy Shield for Microsoft Edge & Google Chrome
-    </div>
-    <div style="color: #94a3b8; font-weight: 500;">
-      100% Client-Side Memory • Zero Data Collection • Open Source
-    </div>
-  </div>
+  <script>
+    function copySensitiveEmail() {
+      navigator.clipboard.writeText("patrick.collison@stripe.com");
+      const toast = document.getElementById("toastNotice");
+      toast.style.display = "inline";
+      setTimeout(() => { toast.style.display = "none"; }, 2000);
+    }
+
+    function addDynamicMessage() {
+      const feed = document.getElementById("chatFeed");
+      const div = document.createElement("div");
+      div.className = "message-row";
+      div.innerHTML = `
+        <div class="chat-avatar">SEC</div>
+        <div class="message-content-wrap">
+          <div class="message-sender">Security Bot • Just Now</div>
+          <div class="messageContent">
+            New login from IP 192.168.1.45. Authorized by alex.mercer@apexcloud.io ($4,200.00 transfer).
+          </div>
+        </div>
+      `;
+      feed.appendChild(div);
+      feed.scrollTop = feed.scrollHeight;
+    }
+  </script>
 
 </body>
 </html>
